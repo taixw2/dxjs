@@ -1,0 +1,25 @@
+{
+  "name": "dva-class",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "invariant": "^2.2.4",
+    "prettier": "^1.19.1"
+  },
+  "dependencies": {
+    "redux": "^4.0.5",
+    "redux-saga": "^0.16.0"
+  }
+}
