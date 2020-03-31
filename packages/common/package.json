@@ -1,0 +1,27 @@
+{
+  "name": "@dxjs/common",
+  "version": "0.0.0",
+  "description": "使用 Class 来组织你的 model",
+  "keywords": [
+    "dva",
+    "redux",
+    "react-redux",
+    "dxjs"
+  ],
+  "author": "mro <254225961@qq.com>",
+  "homepage": "https://github.com/taixw2/dx#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taixw2/dx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/taixw2/dx/issues"
+  },
+  "devDependencies": {
+    "@types/redux-saga": "^0.10.5"
+  },
+  "dependencies": {
+    "redux-saga": "^1.1.3"
+  }
+}

@@ -12,32 +12,33 @@
 
 ```javascript
 // 入口
-import React from "react" 
-import { Dx } from "@dxjs/core" 
-import { ErrorInterceptor } from "@dxjs/common"
+import React from "react"
+import { Dx } from "@dxjs/core"
 import App from "./app"
 
-Dx.create({
+const DxApp = Dx.create({
     // 引入所有的 dx model
     models: [],
+    // reducer 增强器，内部集成了 immer
+    reducerEnhancer: [],
     // redux 的中间件
     middlewares: [],
+    // 注入给 Models 和 effects 的参数，减少不必要的 import
+    injects: [history, utils, ...],
+    // 以下只能用于 effects
     // 全局拦截器, 避免不合理的调用
     gateways: [],
     // 管道
     pipes: [],
     // 守卫
     guards: [],
-    // 注入给 Models 的参数
-    injects: [history, utils, ...],
 })
 
-Dx.run(() => <App />, "#root")
+ReactDOM.render(<DxApp />, document.getElementById('root'))
 
-// 网关用来做数据转换、拦截无效调用
 
 // model
-import { DxMoel } from "@dxjs/core" 
+import { DxMoel } from "@dxjs/core"
 import { Reducer, Effect } from "@dxjs/common"
 import { Take, TakeMaybe, Takelatest, TakeEvery, TakeLeading } from "@dxjs/saga"
 import { RequiredParamsGateway, UserTransform } from "../xxx/"
@@ -67,7 +68,6 @@ class User extends DxMoel {
     }
 
     @Reducer
-    @RequiredParamsGateway
     deleteUserById(id: string, state) {
         _.remove(this.state.users, (user => user.id === id))
     }
@@ -91,7 +91,7 @@ class User extends DxMoel {
     @ErrorPipe(["获取用户 token 异常", "用户信息不匹配"])
     // 守卫是一种兜底行为，可以上层出错的时候，能够获取一些上下文的数据
     @LoggerGuard
-    *getUserInfo(_, { call, put }, [_, _, services]) {
+    *getUserInfo(@Payload("payload") payload, [_, _, services]) {
         // 利用 ErrorPipi，再也不用一个一个的 try cache
         const userToken = yield call(services.getUserToken)
         const userInfo = yield call(services.getUserInfo, userToken)
@@ -100,116 +100,29 @@ class User extends DxMoel {
 
 ```
 
-
-这是一个类 Dev 库，通过 `ES6` 的 `Class` 来组织代码, 能够与 saga 同时存在，做到潜移默化的从 saga 转到 dva
-
-
-## Quick Start
-
-```javascript
-// modelA.js
-import { deco } from 'dva-class'
-
-@deco.action
-export default class User {
-
-    state = {
-        name: ''
-    }
-
-    // reducer
-    updateState() {}
-
-    // effect
-    @deco.takeLatest
-    *getUserInfo() {}
-}
-
-// appWithSaga.js
-import dva from 'dva-class'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-
-const sagaMiddleware = createSagaMiddleware()
-
-const app = dva({
-    reducerEnhancer: [require('immer')]
-})
-
-app.model(require('modelA.js'))
-
-const store = createStore(
-  combineReducers(dva.combineReducers()),
-  applyMiddleware(sagaMiddleware)
-)
-
-app.runSaga(sagaMiddleware)
-
-// appWithoutSaga.js
-import dva from 'dva-class'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-
-const sagaMiddleware = createSagaMiddleware()
-
-const app = dva({
-    reducerEnhancer: [require('immer')]
-})
-
-app.model(require('modelA.js'))
-
-app.start()
-
-const store = app.getStore()
-
-```
-
 ## API
 
-### dva.model
+### Dx
 
-实例化每一个 model, 
+默认的实例，
 
-### dva.start
+### DxFactory
 
-创建 redux 的 store, 
+创建 Dx 的方法
 
-### dva.runSaga
+### Take, TakeMaybe, Takelatest, TakeEvery, TakeLeading...
 
-传入 sagaMiddleware， 在已经集成了 saga 的应用中不应该直接 start, 而是调用 `dva.runSaga` 和 `dva.combineReducers` 把 model 集成到现有的应用中
+分别对应 saga 中的 Api
 
-### dva.combineReducers
+### BasePipeTransform
 
-获取 model 中的所有的 reducers
+所有 pipe 的父类
 
-### deco.action 装饰器
+### BaseGuard
 
-自动为 model 创建 action
+所有 guard 的父类
 
-```javascript
+### BaseGateway
 
-// 引用 Example
-
-User.getUserInfo(userId)
-// 返回 { type: 'User/getUserInfo', payloadL userId }
-
-```
-
-### deco.takeLatest 装饰器
-
-```javascript
-// 内部会构造成
-takeLatest('User/getUserInfo', user.getUserInfo)
-```
-
-### deco.throttle 装饰器
-
-```javascript
-// 内部会构造成
-throttle('User/getUserInfo', user.getUserInfo)
-```
-
-### 默认的 effects
-```javascript
-// 内部会构造成
-takeEvery('User/getUserInfo', user.getUserInfo)
-```
+所有 gateway 的父类
 

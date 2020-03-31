@@ -10,14 +10,21 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
+    "@chores/tsconfig": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-jsx-control-statements": "^2.2.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "install": "^0.13.0",
     "invariant": "^2.2.4",
-    "lerna": "^3.20.2",
-    "prettier": "^1.19.1"
+    "lerna": "^3.16.5",
+    "npm": "^6.14.4",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "redux": "^4.0.5",

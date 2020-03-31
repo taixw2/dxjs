@@ -1,0 +1,9 @@
+{
+  "extends": "@chores/tsconfig",
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "noImplicitAny": true
+  },
+  "include": ["packages/**/*"],
+  "exclude": ["node_modules"]
+}
