@@ -1,17 +1,13 @@
-import { DxModelInterface } from './dx-model.interface';
-import { ReducerEnhancer } from './dx-reducer-enhancer.interface';
+// import { DxModelInterface } from './dx-model.interface';
 import { Middleware } from 'redux';
-import { BaseGateway as BaseGatewayInterface } from './dx-gateway.interface';
-import { BasePipeInterface } from './dx-pipe.interface';
-import { BaseGuardInterface } from './dx-guard.interface';
+import { EffectMiddleware } from 'redux-saga';
+import { DxEnhancer } from './dx-enhancer.interface';
+import { DxModelContstructor } from './dx-model.interface';
 
-export interface CreateOption<T = any> {
-  models: DxModelInterface<T>[];
-  reducerEnhancer?: ReducerEnhancer[];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface CreateOption<T = any> extends DxEnhancer {
+  models: DxModelContstructor[] | { [key: string]: DxModelContstructor };
+  injects?: T[];
   middlewares?: Middleware[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  injects?: any[];
-  gateways?: BaseGatewayInterface[];
-  pipes?: BasePipeInterface[];
-  guards?: BaseGuardInterface[];
+  sagaMiddlewares?: EffectMiddleware[];
 }

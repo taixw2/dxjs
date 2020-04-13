@@ -1,11 +1,5 @@
-interface PipeReturnType<T> {
-  type: T;
-}
+import { Action } from 'redux';
 
 export interface BasePipeInterface {
-  pipe(
-    next: () => PipeReturnType<'next'>,
-    $return: () => PipeReturnType<'return'>,
-    $throw: () => PipeReturnType<'throw'>,
-  ): void;
+  pipe(action: Action): Generator<unknown, boolean | void>;
 }
