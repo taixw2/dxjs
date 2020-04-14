@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxBaseInterface } from '@dxjs/common/interfaces/dx-base.interface';
+import { DxBaseInterface } from '@dxjs/shared/interfaces/dx-base.interface';
 import { PuttableChannel, END, Task } from 'redux-saga';
 import { Action } from 'redux';
 import {

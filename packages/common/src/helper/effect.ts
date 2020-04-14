@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TAKE_EVERY, EFFECT_METHODS_KEY } from '../shared/index';
-import { EffectTypeInterface } from '../interfaces/dx-effect-type.interface';
+import { TAKE_EVERY, EFFECT_METHODS_KEY, SymbolType } from '@dxjs/shared/symbol';
+import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 
 export function Effect(
   actionType: string | symbol,
-  helperType: symbol = TAKE_EVERY,
+  helperType: SymbolType = TAKE_EVERY,
   ...args: any[]
 ): MethodDecorator {
   return (

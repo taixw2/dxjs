@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { REDUCER_METHODS_KEY } from '../shared';
+import { REDUCER_METHODS_KEY } from '@dxjs/shared/symbol';
 
 export function Reducer(type: string | symbol): MethodDecorator {
   return (

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { LABEL, REDUCER_METHODS_KEY, REDUCER_ENHANCER_KEY } from '@dxjs/common/shared';
+import { LABEL, REDUCER_METHODS_KEY, REDUCER_ENHANCER_KEY } from '@dxjs/shared/symbol';
 import { Action, Reducer } from 'redux';
-import { DxModelInterface } from '@dxjs/common/interfaces/dx-model.interface';
-import { EnhancerFilter, Enhancer } from '@dxjs/common/interfaces/dx-enhancer.interface';
-import { ReducerEnhancer } from '@dxjs/common/interfaces/dx-reducer-enhancer.interface';
+import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { EnhancerFilter, Enhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
+import { ReducerEnhancer } from '@dxjs/shared/interfaces/dx-reducer-enhancer.interface';
 import { store } from '../helper/store';
 
 export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
@@ -47,7 +47,8 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
    * 全局的增强器在项目运行时就会执行，切只执行一遍
    * 局部的增强器每次
    */
-  return reducerEnhancer((state, action: Action) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return reducerEnhancer((state: any, action: Action) => {
     model.state = state;
     const methodName = (Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as Map<symbol, string>).get(
       action.type,

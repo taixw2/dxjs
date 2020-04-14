@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxModelContstructor } from '@dxjs/common/interfaces/dx-model.interface';
-import { MODEL_NAME } from '@dxjs/common/shared';
+import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
+import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { store } from '../../helper/store';
 
 export function collectFactory(inst: symbol) {

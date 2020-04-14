@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { CreateOption } from '@dxjs/common/interfaces/dx-create-option.interface';
+import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { all, ForkEffect, spawn } from 'redux-saga/effects';
 import { createStore, applyMiddleware, combineReducers, Action } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { createReducer } from '../create-reducer';
 import { createSaga } from '../create-saga';
-import { MODEL_NAME } from '@dxjs/common/shared';
-import { EnhancerFilter, Enhancer } from '@dxjs/common/interfaces/dx-enhancer.interface';
+import { MODEL_NAME } from '@dxjs/shared/symbol';
+import { EnhancerFilter, Enhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
 import invariant = require('invariant');
 import { createAction } from '../create-action';
 import { store } from '../../helper/store';

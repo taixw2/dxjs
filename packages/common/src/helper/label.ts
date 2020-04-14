@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LABEL } from '../shared';
+import { LABEL } from '@dxjs/shared/symbol';
 
 export function Label(...labels: string[]): MethodDecorator & ClassDecorator {
   return (

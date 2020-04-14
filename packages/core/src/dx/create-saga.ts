@@ -4,8 +4,8 @@ import {
   TAKE_LEADING,
   THROTTLE,
   EFFECT_METHODS_KEY,
-} from '@dxjs/common/shared';
-import { DxModelInterface } from '@dxjs/common/interfaces/dx-model.interface';
+} from '@dxjs/shared/symbol';
+import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import {
   all,
   AllEffect,
@@ -16,7 +16,7 @@ import {
   takeLeading,
   throttle,
 } from 'redux-saga/effects';
-import { EffectTypeInterface } from '@dxjs/common/interfaces/dx-effect-type.interface';
+import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 
 export function createSaga(model: DxModelInterface): () => Generator<AllEffect<ForkEffect>> {
   // TODO: effect 增强器优先级降低，后期再重构

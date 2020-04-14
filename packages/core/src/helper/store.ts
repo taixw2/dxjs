@@ -1,5 +1,5 @@
-import { DxEnhancer } from '@dxjs/common/interfaces/dx-enhancer.interface';
-import { DxModelContstructor } from '@dxjs/common/interfaces/dx-model.interface';
+import { DxEnhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
+import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 
 interface ModelRefs {
   set: Set<DxModelContstructor>;
