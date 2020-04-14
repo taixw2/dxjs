@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@chores/tsconfig": "^1.0.1",
+    "@types/jest": "^25.2.1",
+    "@types/react": "^16.9.34",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "babel-eslint": "^10.1.0",
@@ -19,15 +22,12 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "install": "^0.13.0",
     "invariant": "^2.2.4",
     "lerna": "^3.16.5",
-    "npm": "^6.14.4",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
-    "typescript": "^3.8.3"
-  },
-  "dependencies": {
-    "redux": "^4.0.5",
-    "redux-saga": "^0.16.0"
+    "react": "^16.13.1",
+    "typescript": "^3.8.3",
+    "vuepress": "^1.4.0"
   }
 }

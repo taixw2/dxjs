@@ -5,8 +5,9 @@
     "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "downlevelIteration": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "module": "UMD"
   },
-  "include": ["packages/**/*", "extension.typeing.ts"],
-  "exclude": ["node_modules"]
+  "include": ["packages/**/*", "extension.typeing.ts", "__tests/**/*"],
+  "exclude": ["node_modules", "scripts"]
 }
