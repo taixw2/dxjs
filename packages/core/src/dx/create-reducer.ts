@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { LABEL, REDUCER_METHODS_KEY, REDUCER_ENHANCER_KEY } from '@dxjs/shared/symbol';
-import { Action, Reducer } from 'redux';
+import { Reducer, AnyAction } from 'redux';
 import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import { EnhancerFilter, Enhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
 import { ReducerEnhancer } from '@dxjs/shared/interfaces/dx-reducer-enhancer.interface';
@@ -51,7 +51,7 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
    * 局部的增强器每次
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return reducerEnhancer((state: any, action: Action) => {
+  return reducerEnhancer((state: any, action: AnyAction) => {
     const methodName = (Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as Map<symbol, string>).get(
       action.type,
     );
@@ -67,7 +67,7 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
         (a: ReducerEnhancer, b: ReducerEnhancer) => a(b),
         f => f,
       )(originReducer)
-      .call(model, state, action);
+      .call(model, action.payload, state);
 
     if (!currentState) return model.state;
     return currentState;

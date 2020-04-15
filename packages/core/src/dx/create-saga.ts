@@ -17,6 +17,7 @@ import {
   throttle,
 } from 'redux-saga/effects';
 import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
+import { AnyAction } from 'redux';
 
 export function createSaga(model: DxModelInterface): () => Generator<AllEffect<ForkEffect>> {
   // TODO: effect 增强器优先级降低，后期再重构
@@ -24,23 +25,25 @@ export function createSaga(model: DxModelInterface): () => Generator<AllEffect<F
   const effectMates = Reflect.getMetadata(EFFECT_METHODS_KEY, Model) as Set<EffectTypeInterface>;
 
   const effects = [...effectMates].map(effectItem => {
-    const effect = model[effectItem.name as string];
+    function* effect(action: AnyAction): Generator {
+      return yield model[effectItem.name as string](action.payload);
+    }
     return spawn(function*() {
       switch (effectItem.helperType) {
         case TAKE_EVERY:
-          yield takeEvery(effectItem.actionType, effect);
+          yield takeEvery(effectItem.actionType, effect.bind(model));
           break;
         case TAKE_LATEST:
-          yield takeLatest(effectItem.actionType, effect);
+          yield takeLatest(effectItem.actionType, effect.bind(model));
           break;
         case TAKE_LEADING:
-          yield takeLeading(effectItem.actionType, effect);
+          yield takeLeading(effectItem.actionType, effect.bind(model));
           break;
         case THROTTLE:
-          yield throttle(effectItem.value[0] ?? 350, effectItem.actionType, effect);
+          yield throttle(effectItem.value[0] ?? 350, effectItem.actionType, effect.bind(model));
           break;
         default:
-          yield takeEvery(effectItem.actionType, effect);
+          yield takeEvery(effectItem.actionType, effect.bind(model));
           break;
       }
     });
