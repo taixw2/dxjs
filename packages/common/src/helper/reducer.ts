@@ -9,10 +9,10 @@ export function Reducer(type?: string | symbol): MethodDecorator {
   ): TypedPropertyDescriptor<any> => {
     // 通过 action type 获取对应的 target 方法，所以用 Map 结构
     const reducers: Map<SymbolType, SymbolType> =
-      Reflect.getMetadata(REDUCER_METHODS_KEY, target) ?? new Map();
+      Reflect.getMetadata(REDUCER_METHODS_KEY, target.constructor) ?? new Map();
 
     reducers.set(type || Symbol('__action'), key);
-    Reflect.defineMetadata(REDUCER_METHODS_KEY, [], target);
+    Reflect.defineMetadata(REDUCER_METHODS_KEY, reducers, target.constructor);
     return descriptor;
   };
 }
