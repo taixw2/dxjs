@@ -52,18 +52,21 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return reducerEnhancer((state: any, action: Action) => {
-    model.state = state;
     const methodName = (Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as Map<symbol, string>).get(
       action.type,
     );
 
-    if (!methodName) return state;
+    if (!methodName) return model.state;
+    model.state = state;
     const enhances: ReducerEnhancer[] =
       Reflect.getMetadata(REDUCER_ENHANCER_KEY, Model, methodName) ?? [];
     const originReducer = model[methodName] as Reducer;
 
     const currentState = enhances
-      .reduce((a: ReducerEnhancer, b: ReducerEnhancer) => a(b))(originReducer)
+      .reduce(
+        (a: ReducerEnhancer, b: ReducerEnhancer) => a(b),
+        f => f,
+      )(originReducer)
       .call(model, state, action);
 
     if (!currentState) return model.state;
