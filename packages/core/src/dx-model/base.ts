@@ -52,6 +52,10 @@ export class DxBase implements DxBaseInterface {
     return put(resolve, action);
   }
 
+  $call<Fn extends (...args: any[]) => any>(
+    fn: Fn,
+    ...args: Parameters<Fn>
+  ): CallEffect<SagaReturnType<Fn>>;
   $call<Ctx, Fn extends (this: Ctx, ...args: any[]) => any>(
     ctxAndFn: [Ctx, Fn],
     ...args: Parameters<Fn>
@@ -72,6 +76,11 @@ export class DxBase implements DxBaseInterface {
     fnName: Name,
     args: Parameters<Ctx[Name]>,
   ): CallEffect<SagaReturnType<Ctx[Name]>>;
+  $apply<Ctx, Fn extends (this: Ctx, ...args: any[]) => any>(
+    ctx: Ctx,
+    fn: Fn,
+    args: Parameters<Fn>,
+  ): CallEffect<SagaReturnType<Fn>>;
   $apply<Ctx, Fn extends (this: Ctx, ...args: any[]) => any>(
     ctx: Ctx,
     fn: Fn,
@@ -100,6 +109,10 @@ export class DxBase implements DxBaseInterface {
   $cps<Fn extends (...args: any[]) => any>(
     fn: Fn,
     ...args: CpsFunctionParameters<Fn>
+  ): CpsEffect<ReturnType<Fn>>;
+  $cps<Fn extends (...args: any[]) => any>(
+    fn: Fn,
+    ...args: CpsFunctionParameters<Fn>
   ): CpsEffect<ReturnType<Fn>> {
     return cps(fn, ...args);
   }
@@ -118,6 +131,10 @@ export class DxBase implements DxBaseInterface {
   ): ForkEffect<SagaReturnType<Fn>>;
   $fork<Ctx, Fn extends (this: Ctx, ...args: any[]) => any>(
     ctxAndFn: { context: Ctx; fn: Fn },
+    ...args: Parameters<Fn>
+  ): ForkEffect<SagaReturnType<Fn>>;
+  $fork<Fn extends (...args: any[]) => any>(
+    fn: Fn,
     ...args: Parameters<Fn>
   ): ForkEffect<SagaReturnType<Fn>>;
   $fork<Fn extends (...args: any[]) => any>(
@@ -146,6 +163,10 @@ export class DxBase implements DxBaseInterface {
   $spawn<Fn extends (...args: any[]) => any>(
     fn: Fn,
     ...args: Parameters<Fn>
+  ): ForkEffect<SagaReturnType<Fn>>;
+  $spawn<Fn extends (...args: any[]) => any>(
+    fn: Fn,
+    ...args: Parameters<Fn>
   ): ForkEffect<SagaReturnType<Fn>> {
     return spawn(fn, ...args);
   }
@@ -158,9 +179,6 @@ export class DxBase implements DxBaseInterface {
 
   $cancel(task: Task | Task[]): CancelEffect {
     if (Array.isArray(task)) return cancel(task);
-    return cancel(task);
-  }
-  $cancels(task: Task[]): CancelEffect {
     return cancel(task);
   }
 
@@ -191,15 +209,13 @@ export class DxBase implements DxBaseInterface {
   }
 
   $all<T>(effects: T[]): AllEffect<T>;
+  $all<T>(effects: { [key: string]: T }): AllEffect<T>;
   $all<T>(effects: { [key: string]: T }): AllEffect<T> {
     return all(effects);
   }
 
-  $raceWithMap<T>(effects: { [key: string]: T }): RaceEffect<T> {
-    return race(effects);
-  }
-
   $race<T>(effects: { [key: string]: T }): RaceEffect<T>;
+  $race<T>(effects: T[]): RaceEffect<T>;
   $race<T>(effects: T[]): RaceEffect<T> {
     return race(effects);
   }
