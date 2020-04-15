@@ -3,15 +3,16 @@ import { DxBaseInterface } from './dx-base.interface';
 import { Reducer, Action } from 'redux';
 
 export interface DxModelInterface<T = any> extends DxBaseInterface {
-  [key: string]: Reducer | any;
   state: T;
+
+  [key: string]: Reducer | any;
 }
 
 type DxAction = <T>(payload: T) => Action<T>;
 type DxActionAutoDispatch = <T>(payload: T, autodDispatch: boolean) => void;
 
-export interface DxModelContstructor {
-  new (...props: any[]): DxModelInterface;
+export interface DxModelContstructor<T = any> {
+  new (...props: any[]): DxModelInterface<T>;
 
-  [action: string]: DxAction | DxActionAutoDispatch;
+  [action: string]: DxAction | DxActionAutoDispatch | any;
 }

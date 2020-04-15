@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
-import invariant = require('invariant');
 import { store } from '../../helper/store';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const invariant = require('invariant');
 
 export type GetModels =
   | { new (): DxModelInterface<any> }

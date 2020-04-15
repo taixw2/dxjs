@@ -6,19 +6,19 @@ export type SymbolType = symbol | string;
  *
  * Model Name 通常是构造器的名称，但是也可以设置别名
  */
-export let MODEL_NAME: symbolType = '__model_name';
+export let MODEL_NAME: SymbolType = '__model_name';
 
 /**
  * 用于获取作为 reducer 的 key,
  * 只有使用装饰器 @Reducer 表明的，才算一个有效 key
  */
-export let RECORD_REDUCER_KEYS: symbolType = '__record_reducer_keys';
+export let RECORD_REDUCER_KEYS: SymbolType = '__record_reducer_keys';
 
 /**
  * 用来标明 类 或者 方法
  * 可用于决定某个增强器是否适用于此类/方法
  */
-export let LABEL: symbolType = '__label';
+export let LABEL: SymbolType = '__label';
 
 /**
  * reducer 方法
@@ -27,21 +27,22 @@ export let LABEL: symbolType = '__label';
  *
  * (Reflect.getMetadata(Model, REDUCER_METHODS_KEY) as Map<Symbol.for, string>).get(action.type)
  */
-export let REDUCER_METHODS_KEY: symbolType = '__reducer_method';
+export let REDUCER_METHODS_KEY: SymbolType = '__reducer_method';
 
 /**
  * reducer 增强器，
  * 用于获取某个 reducer 的增强器
  */
-export let REDUCER_ENHANCER_KEY: symbolType = '__reducer_enhancer';
+export let REDUCER_ENHANCER_KEY: SymbolType = '__reducer_enhancer';
 
 /**
  * effect 的 helper 别名
  */
-export let TAKE_LATEST: symbolType = '__take_latest';
-export let TAKE_EVERY: symbolType = '__take_every';
-export let TAKE_LEADING: symbolType = '__take_leading';
-export let THROTTLE: symbolType = '__throttle';
+export let TAKE_LATEST: SymbolType = '__take_latest';
+export let TAKE_EVERY: SymbolType = '__take_every';
+export let TAKE_LEADING: SymbolType = '__take_leading';
+export let THROTTLE: SymbolType = '__throttle';
+export const EFFECT_HELPERS: SymbolType[] = [TAKE_LATEST, TAKE_EVERY, TAKE_LEADING, THROTTLE];
 
 /**
  * effect 方法
@@ -50,7 +51,7 @@ export let THROTTLE: symbolType = '__throttle';
  *
  * (Reflect.getMetadata(Model, EFFECT_METHODS_KEY) as Map<Symbol.for, string>)
  */
-export let EFFECT_METHODS_KEY: symbolType = Symbol.for('__effect_method');
+export let EFFECT_METHODS_KEY: SymbolType = Symbol.for('__effect_method');
 
 if (typeof Symbol === 'function' && Symbol.for) {
   MODEL_NAME = Symbol.for('__model_name');
