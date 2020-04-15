@@ -52,6 +52,9 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return reducerEnhancer((state: any, action: AnyAction) => {
+    const reducers = Reflect.getMetadata(REDUCER_METHODS_KEY, Model);
+    if (!reducers) return model.state;
+
     const methodName = (Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as Map<symbol, string>).get(
       action.type,
     );
