@@ -5,29 +5,39 @@
   "main": "index.js",
   "scripts": {
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "test": "jest --config scripts/jest/jest.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
     "@chores/tsconfig": "^1.0.1",
     "@types/jest": "^25.2.1",
     "@types/react": "^16.9.34",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.3.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
     "eslint-plugin-prettier": "^3.1.2",
     "invariant": "^2.2.4",
+    "jest": "^25.3.0",
     "lerna": "^3.16.5",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
     "react": "^16.13.1",
     "typescript": "^3.8.3",
     "vuepress": "^1.4.0"
-  }
+  },
+  "dependencies": {}
 }
