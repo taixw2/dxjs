@@ -39,9 +39,12 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
       (enhancer: Enhancer<ReducerEnhancer>) =>
         (enhancer as EnhancerFilter<ReducerEnhancer>).enhancer,
     )
-    .reduce((a: ReducerEnhancer, b: ReducerEnhancer) => {
-      return (reducer: Reducer): Reducer => a(b(reducer));
-    });
+    .reduce(
+      (a: ReducerEnhancer, b: ReducerEnhancer) => {
+        return (reducer: Reducer): Reducer => a(b(reducer));
+      },
+      r => r,
+    );
 
   /**
    * 全局的增强器在项目运行时就会执行，切只执行一遍
