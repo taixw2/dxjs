@@ -8,11 +8,16 @@ const invariant = require('invariant');
 
 export type GetModels =
   | { new (): DxModelInterface<any> }
+  | { new (): DxModelInterface<any> }[]
   | { [key: string]: new () => DxModelInterface<any> }
   | undefined;
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function modelsFactory(inst: symbol) {
-  return (match?: string | RegExp): GetModels => {
+  function getModels(): { [key: string]: new () => DxModelInterface<any> };
+  function getModels(match: RegExp): { new (): DxModelInterface<any> }[];
+  function getModels(match: string): { new (): DxModelInterface<any> };
+  function getModels(match?: string | RegExp): GetModels {
     const map = store.models.get(inst)?.map || {};
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const set = store.models.get(inst)!.set;
@@ -33,6 +38,8 @@ export function modelsFactory(inst: symbol) {
       if (Reflect.has(map, match)) return Reflect.get(map, match);
       return [...set].find(model => getModelName(model).startsWith(match));
     }
-    return [...set].find(model => match.test(getModelName(model)));
-  };
+    return [...set].filter(model => match.test(getModelName(model)));
+  }
+
+  return getModels;
 }
