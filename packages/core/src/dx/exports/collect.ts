@@ -17,6 +17,8 @@ export function collectFactory(inst: symbol) {
           'collect model 必须继承自 DxModel, 当前 model 类型为 %s',
           typeof ModelTarget,
         );
+
+        invariant(!store.reduxStore.get(inst), 'store 已经存在, 不能再 store 创建之后增加 model');
       }
 
       const models = store.getModels(inst);

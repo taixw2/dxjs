@@ -28,6 +28,11 @@ export function modelsFactory(inst: symbol) {
         '请传入有效的参数，当前参数类型为 %s, 但只接受 string、undefined、regexp 的类型',
         typeof match,
       );
+
+      invariant(
+        store.reduxStore.get(inst),
+        'store 还没有创建，请先调用 Dx.createStore 或 Dx.create 创建 store',
+      );
     }
 
     function getModelName(model: DxModelContstructor): string {

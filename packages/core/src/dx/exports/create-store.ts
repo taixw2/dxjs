@@ -42,6 +42,9 @@ function creteEnhancer<T>(enhancers?: Enhancer<T>[]): EnhancerFilter<T>[] {
 
 export function createStoreFactory(inst: symbol) {
   return <T>(options?: CreateOption<T>): Store<{}, Action> => {
+    const previousStore = store.reduxStore.get(inst);
+    if (previousStore) return previousStore;
+
     store.enhancer.set(inst, {
       reducerEnhancer: creteEnhancer(options?.reducerEnhancer),
       sentinels: creteEnhancer(options?.sentinels),
@@ -113,6 +116,7 @@ export function createStoreFactory(inst: symbol) {
 
     // 封装 dispatch
     createAction(dispatch, inst);
+    store.reduxStore.set(inst, rstore);
     return rstore;
   };
 }
