@@ -11,9 +11,9 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
   const enhance = store.enhancer.get(inst)!;
   const Model = model.constructor;
 
-  const modelLabels: string[] = Reflect.getMetadata(LABEL, Model) || [];
-  const reducerEnhancerFilter = enhance.reducerEnhancer!.filter(
-    (enhancer: Enhancer<ReducerEnhancer>): boolean => {
+  const modelLabels: string[] = Reflect.getMetadata(LABEL, Model) ?? [];
+  const reducerEnhancerFilter =
+    enhance.reducerEnhancer?.filter((enhancer: Enhancer<ReducerEnhancer>): boolean => {
       const _enhancer = enhancer as EnhancerFilter<ReducerEnhancer>;
       if (_enhancer.include === '*') {
         return true;
@@ -31,8 +31,7 @@ export function createReducer(model: DxModelInterface, inst: symbol): Reducer {
         return !modelLabels.some(label => (_enhancer.exclude as RegExp).test(label));
       }
       return false;
-    },
-  );
+    }) ?? [];
 
   const reducerEnhancer = reducerEnhancerFilter
     .map(
