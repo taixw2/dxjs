@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { DxModelInterface, DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { store } from '../../helper/store';
+import { MODEL_NAME } from '@dxjs/shared/symbol';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const invariant = require('invariant');
@@ -24,12 +25,14 @@ export function modelsFactory(inst: symbol) {
       );
     }
 
-    if (typeof match === 'string') {
-      if (Reflect.has(map, match)) {
-        return Reflect.get(map, match);
-      }
-      return [...set].find(model => model.name.startsWith(match));
+    function getModelName(model: DxModelContstructor): string {
+      return Reflect.getMetadata(MODEL_NAME, model) ?? model.name;
     }
-    return [...set].find(model => match.test(model.name));
+
+    if (typeof match === 'string') {
+      if (Reflect.has(map, match)) return Reflect.get(map, match);
+      return [...set].find(model => getModelName(model).startsWith(match));
+    }
+    return [...set].find(model => match.test(getModelName(model)));
   };
 }
