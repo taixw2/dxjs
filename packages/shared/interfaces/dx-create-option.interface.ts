@@ -6,7 +6,7 @@ import { DxModelContstructor } from './dx-model.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface CreateOption<T = any> extends DxEnhancer {
-  models: DxModelContstructor[] | { [key: string]: DxModelContstructor };
+  models?: DxModelContstructor[] | { [key: string]: DxModelContstructor };
   injects?: T[];
   middlewares?: Middleware[];
   sagaMiddlewares?: EffectMiddleware[];
