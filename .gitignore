@@ -7,7 +7,7 @@ build
 .cache/
 
 # 暂时不提交
-scripts/
+# scripts/
 *.md
 
 
