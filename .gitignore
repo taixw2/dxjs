@@ -2,6 +2,7 @@ node_modules
 *.log
 .vscode
 dist
+build
 
 .cache/
 
@@ -11,3 +12,4 @@ scripts/
 
 
 *-lock.json
+*.lock
