@@ -6,8 +6,10 @@ import { createStoreFactory } from './create-store';
 export function createFactory(inst: symbol) {
   return <T>(options?: CreateOption<T>): React.SFC => {
     const store = createStoreFactory(inst)(options);
-    return <T>(props: React.PropsWithChildren<T>): React.ReactElement => {
-      return React.createElement(Provider, { store, ...props });
+    return <T extends { store?: any }>({
+      children,
+    }: React.PropsWithChildren<T>): React.ReactElement => {
+      return React.createElement(Provider, { store }, children);
     };
   };
 }

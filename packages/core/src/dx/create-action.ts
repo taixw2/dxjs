@@ -2,7 +2,7 @@
 import { store } from '../helper/store';
 import { REDUCER_METHODS_KEY, EFFECT_METHODS_KEY } from '@dxjs/shared/symbol';
 import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
-import { AnyAction } from '@dxjs/common/node_modules/redux';
+import { AnyAction } from 'redux';
 import { Dispatch } from 'react';
 
 export function createAction(dispatch: Dispatch<AnyAction>, inst: symbol): void {
