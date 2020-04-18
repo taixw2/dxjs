@@ -1,6 +1,6 @@
 import { DxEnhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
 import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
-import { Store } from '@dxjs/shared/node_modules/redux';
+import { Store } from 'redux';
 
 interface ModelRefs {
   set: Set<DxModelContstructor>;
