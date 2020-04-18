@@ -10,7 +10,8 @@
   "scripts": {
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "test": "jest --config scripts/jest/jest.config.js"
+    "test": "jest --config scripts/jest/jest.config.js",
+    "build": "node scripts/build.js"
   },
   "keywords": [],
   "author": "",
