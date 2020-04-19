@@ -14,7 +14,7 @@
   "main": "index.js",
   "publishConfig": {
     "access": "public",
-    "registry":"https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/"
   },
   "directories": {
     "lib": "lib",
@@ -43,6 +43,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
+    "@dxjs/shared": "^1.0.0",
     "es6-symbol": "^3.1.3",
     "immer": "^6.0.3",
     "iterare": "^1.2.0",

@@ -10,6 +10,7 @@ build
 # scripts/
 *.md
 
+lib/
 
 *-lock.json
 *.lock

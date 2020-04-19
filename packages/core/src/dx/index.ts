@@ -2,9 +2,26 @@ import { createFactory } from './exports/create';
 import { modelsFactory } from './exports/models';
 import { collectFactory } from './exports/collect';
 import { createStoreFactory } from './exports/create-store';
+import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
+import { Store, Action } from 'redux';
+import * as React from "react";
+import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function DxFactory() {
+export interface IDxFactory {
+  createStore: <T>(options?: CreateOption<T>) => Store<{}, Action>
+  create: <T>(options?: CreateOption<T>) => React.SFC
+  getModels: {
+    (): {
+      [key: string]: DxModelContstructor;
+    };
+    (match: RegExp): DxModelContstructor[];
+    (match: string): DxModelContstructor;
+  }
+  collect: (name?: string) => (ModelTarget: DxModelContstructor) => DxModelContstructor
+}
+
+
+export function DxFactory(): IDxFactory {
   const inst = Symbol('__dx');
 
   return {
