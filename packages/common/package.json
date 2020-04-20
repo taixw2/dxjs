@@ -1,6 +1,6 @@
 {
   "name": "@dxjs/common",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unified management of your application status, use enhancer to deal with other tedious things",
   "keywords": [
     "dxjs",

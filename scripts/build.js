@@ -124,6 +124,7 @@ async function createBundle(package, bundleType) {
         babel({
           configFile: path.resolve('.babelrc'),
           exclude: 'node_modules/**',
+          runtimeHelpers: true,
           extensions: [
             ...babelCore.DEFAULT_EXTENSIONS,
             '.ts',
@@ -178,7 +179,13 @@ function copyResource() {
   const tasks = fs.readdirSync('packages').map(async name => {
     const fromBaseDir = path.join('packages', name);
     const toBaseDir = path.join('build', name);
-    if (!fs.existsSync(toBaseDir)) return;
+    if (!fs.existsSync(toBaseDir)) {
+      // 直接复制整个目录到 build
+      await mkdirp(toBaseDir)
+
+      await copyTo(fromBaseDir, toBaseDir)
+      return
+    };
 
     await copyTo(path.join(fromBaseDir, 'npm'), path.join(toBaseDir));
     await copyTo('LICENSE', path.join(toBaseDir, 'LICENSE'));
