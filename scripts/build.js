@@ -183,7 +183,7 @@ function copyResource() {
     await copyTo(path.join(fromBaseDir, 'npm'), path.join(toBaseDir));
     await copyTo('LICENSE', path.join(toBaseDir, 'LICENSE'));
     await copyTo(path.join(fromBaseDir, 'package.json'), path.join(toBaseDir, 'package.json'));
-    await copyTo('README.md'), path.join(toBaseDir, 'README.md'));
+    await copyTo('README.md', path.join(toBaseDir, 'README.md'));
   });
 
   return Promise.all(tasks);
