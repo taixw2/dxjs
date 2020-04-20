@@ -1,8 +1,5 @@
 # dxjs
 
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/taixw2/dx/master.svg?style=flat-square)](https://codecov.io/gh/taixw2/dx/)
-[![NPM Version](https://img.shields.io/npm/v/@dxjs/core?style=flat)](https://npmjs.com/package/@dxjs/core)
-
 基于 Redux、Redux-saga、Typescripe 的库，用来组织应用中的副作用和管理状态
 
 ### 快速开始
@@ -38,7 +35,7 @@ class Counter extends DxMoel {
         yield this.$put(Counter.updateState(200))
     }
 }
-```
+
 ### example
 
 - [sample \(by create-react-app\)](./examples/create-react-app)

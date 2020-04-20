@@ -1,1 +1,18 @@
 node_modules
+*.log
+.vscode
+dist
+build
+
+.cache/
+
+# 暂时不提交
+# scripts/
+docs
+
+lib/
+
+*-lock.json
+*.lock
+
+coverage/

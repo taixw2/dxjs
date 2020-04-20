@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "build"
+  },
+  "include": ["packages/**/*"],
+  "exclude": ["node_modules", "scripts"]
+}

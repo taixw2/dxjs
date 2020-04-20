@@ -1,25 +1,59 @@
 {
-  "name": "dva-class",
+  "name": "dxjs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "test": "jest --config scripts/jest/jest.config.js",
+    "build": "node scripts/build.js && tsc -p tsconfig.dts.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@chores/tsconfig": "^1.0.1",
+    "@types/jest": "^25.2.1",
+    "@types/react": "^16.9.34",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.3.0",
+    "chalk": "^4.0.0",
+    "codecov": "^3.6.5",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-jsx-control-statements": "^2.2.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "gzip-size": "^5.1.1",
     "invariant": "^2.2.4",
-    "prettier": "^1.19.1"
+    "jest": "^25.3.0",
+    "lerna": "^3.16.5",
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "prettier": "^1.19.1",
+    "react": "^16.13.1",
+    "rmfr": "^2.0.0",
+    "rollup": "^2.6.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "typescript": "^3.8.3",
+    "vuepress": "^1.4.0"
   },
-  "dependencies": {
-    "redux": "^4.0.5",
-    "redux-saga": "^0.16.0"
-  }
+  "dependencies": {}
 }
