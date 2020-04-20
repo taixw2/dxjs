@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { DxModel } from '../src';
 import { DxModelInterface, DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { Reducer, Effect } from '../../common/src';
