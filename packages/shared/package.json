@@ -1,21 +1,20 @@
 {
   "name": "@dxjs/shared",
   "version": "1.0.0",
-  "description": "dxjs",
+  "description": "Unified management of your application status, use enhancer to deal with other tedious things",
   "keywords": [
-    "dxjs"
+    "dxjs",
+    "react-redux",
+    "react-saga",
+    "react-dxjs",
+    "react",
+    "saga",
+    "redux",
+    "model"
   ],
   "author": "mro <254225961@qq.com>",
   "homepage": "https://github.com/taixw2/dx#readme",
   "license": "MIT",
-  "main": "lib/shared.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -23,9 +22,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taixw2/dx.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/taixw2/dx/issues"

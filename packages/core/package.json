@@ -1,9 +1,13 @@
 {
   "name": "@dxjs/core",
   "version": "1.0.0",
-  "description": "使用 Class 来组织你的 model",
+  "description": "Unified management of your application status, use enhancer to deal with other tedious things",
   "keywords": [
-    "dva",
+    "dxjs",
+    "react-redux",
+    "react-saga",
+    "react-dxjs",
+    "react",
     "saga",
     "redux",
     "model"
@@ -17,23 +21,21 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taixw2/dx.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/taixw2/dx/issues"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "cjs",
+    "umd",
+    "src"
+  ],
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@chores/tsconfig": "^1.0.1",

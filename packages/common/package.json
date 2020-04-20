@@ -1,12 +1,16 @@
 {
   "name": "@dxjs/common",
   "version": "1.0.0",
-  "description": "使用 Class 来组织你的 model",
+  "description": "Unified management of your application status, use enhancer to deal with other tedious things",
   "keywords": [
-    "dva",
-    "redux",
+    "dxjs",
     "react-redux",
-    "dxjs"
+    "react-saga",
+    "react-dxjs",
+    "react",
+    "saga",
+    "redux",
+    "model"
   ],
   "author": "mro <254225961@qq.com>",
   "homepage": "https://github.com/taixw2/dx#readme",
@@ -24,6 +28,14 @@
   "bugs": {
     "url": "https://github.com/taixw2/dx/issues"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+    "cjs",
+    "umd",
+    "src"
+  ],
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@types/react-redux": "^7.1.7",
