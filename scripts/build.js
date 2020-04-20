@@ -200,28 +200,7 @@ async function build() {
     await createBundle(package, CJS_DEV);
   }
   // 遍历所有的包
-
   await copyResource();
 }
 
 build();
-
-// const bundles = require("./bundles")
-// const options = require("./base")
-
-// async function bootstrap() {
-//   for (let index = 0; index < bundles.packages.length; index++) {
-//     const package = bundles.packages[index];
-//     const bundleTypes = bundles.bundleTypes;
-
-//     for (let index = 0; index < bundleTypes.length; index++) {
-//       const bundleType = bundleTypes[index];
-//       const [moduleType, env] = bundleType.split(":")
-//       process.env.NODE_ENV = env
-//       const bundler = new Bundler(path.join(__dirname, "../", "packages", package, "index.ts"), options(package, moduleType, env));
-//       await bundler.bundle()
-//     }
-//   }
-// }
-
-// bootstrap()
