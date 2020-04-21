@@ -8,6 +8,6 @@
     "esModuleInterop": true,
     "module": "UMD"
   },
-  "include": ["packages/**/*", "extension.typeing.ts", "__tests/**/*"],
+  "include": ["packages/**/*"],
   "exclude": ["node_modules", "scripts"]
 }
