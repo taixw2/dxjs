@@ -8,8 +8,10 @@ const fs = require('fs');
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
 const resolve = require('rollup-plugin-node-resolve');
+const terser = require('rollup-plugin-terser').terser;
+const replace = require('rollup-plugin-replace');
 const gzip = require('gzip-size');
-const babelCore = require("@babel/core")
+const babelCore = require('@babel/core');
 const react = require('react');
 const reactDom = require('react-dom');
 const reactIs = require('react-is');
@@ -17,14 +19,24 @@ const propTypes = require('prop-types');
 const reactRedux = require('react-redux');
 
 const packages = [
-  { entry: '@dxjs/core', global: 'Dx' },
-  { entry: '@dxjs/common', global: 'DxCommon' },
+  {
+    entry: '@dxjs/core',
+    global: 'Dx',
+    externals: [
+      { entry: 'react', global: 'React' },
+      { entry: 'react-dom', global: 'ReactDom' },
+      { entry: '@dxjs/common', global: 'DxCommon' },
+    ],
+  },
+  {
+    entry: '@dxjs/common',
+    global: 'DxCommon',
+    externals: [
+      { entry: 'react', global: 'React' },
+      { entry: 'react-dom', global: 'ReactDom' },
+    ],
+  },
 ];
-
-const externals = [
-  { entry: 'react', global: 'React' },
-  { entry: 'react-dom', global: 'ReactDom' },
-]
 
 const UMD = 'UMD';
 const UMD_DEV = 'UMD_DEV';
@@ -59,7 +71,7 @@ function getFormat(bundleType) {
       //
       break;
   }
-  return 'umd'
+  return 'umd';
 }
 
 function getOutoutPath(packageName, bundleType, filename) {
@@ -80,11 +92,8 @@ function getNodeEnv(bundleType) {
   }
 }
 
-function getGloabls() {
-  return [...packages, ...externals].reduce((a, b) => {
-    a[b.entry] = b.global
-    return a
-  }, {})
+function combinGlobalModule(externals) {
+  return externals.reduce((a, b) => ((a[b.entry] = b.global), a), {});
 }
 
 function getPackageName(package) {
@@ -93,45 +102,23 @@ function getPackageName(package) {
 
 async function createBundle(package, bundleType) {
   // 获取文件名称
-  const { entry, global: globalName } = package;
+  const { entry, global: globalName, externals } = package;
   const packageName = getPackageName(entry);
   const packageFileName = getPackgeFileName(packageName, bundleType);
   const tag = chalk.white.bold(packageFileName) + chalk.dim(` (${bundleType})`);
   console.log(chalk.bgYellow.black(' BUILDING   '), tag);
 
   process.env.NODE_ENV = getNodeEnv(bundleType);
-  const isProduction = process.env.NODE_ENV === "production"
-  // 获取输出路径
-  const bundlerOption = {
-    outDir: getOutoutPath(packageName, bundleType, packageFileName),
-    outFile: packageFileName,
-    bundleNodeModules: true,
-    target: 'browser',
-    watch: false,
-    logLevel: 5,
-    hmr: false,
-    sourceMaps: process.env.NODE_ENV === 'development',
-    detailedReport: false,
-  };
+  const isProduction = process.env.NODE_ENV === 'production';
 
   try {
     const entryFile = require.resolve(entry);
-
     const bundle = await rollup.rollup({
       input: entryFile,
       external: externals.map(v => v.entry),
       plugins: [
-        babel({
-          configFile: path.resolve('.babelrc'),
-          exclude: 'node_modules/**',
-          runtimeHelpers: true,
-          extensions: [
-            ...babelCore.DEFAULT_EXTENSIONS,
-            '.ts',
-          ]
-        }),
         resolve({
-          extensions: ['.js', '.ts']
+          extensions: ['.js', '.ts'],
         }),
         commonjs({
           namedExports: {
@@ -142,17 +129,24 @@ async function createBundle(package, bundleType) {
             'prop-types': Object.keys(propTypes),
           },
         }),
-      ]
+        babel({
+          configFile: path.resolve('.babelrc'),
+          exclude: 'node_modules/**',
+          runtimeHelpers: true,
+          extensions: [...babelCore.DEFAULT_EXTENSIONS, '.ts'],
+        }),
+        replace({
+          __DEV__: !isProduction,
+        }),
+        isProduction && terser()
+      ],
     });
 
-    const globals = { ...getGloabls() }
-    Reflect.deleteProperty(globals, entry)
     await bundle.write({
       // output option
       file: getOutoutPath(packageName, bundleType, packageFileName),
       format: getFormat(bundleType),
-      // 全局的模块
-      globals: globals,
+      globals: combinGlobalModule(externals),
       freeze: false,
       name: globalName,
       interop: false,
@@ -181,11 +175,11 @@ function copyResource() {
     const toBaseDir = path.join('build', name);
     if (!fs.existsSync(toBaseDir)) {
       // 直接复制整个目录到 build
-      await mkdirp(toBaseDir)
+      await mkdirp(toBaseDir);
 
-      await copyTo(fromBaseDir, toBaseDir)
-      return
-    };
+      await copyTo(fromBaseDir, toBaseDir);
+      return;
+    }
 
     await copyTo(path.join(fromBaseDir, 'npm'), path.join(toBaseDir));
     await copyTo('LICENSE', path.join(toBaseDir, 'LICENSE'));
