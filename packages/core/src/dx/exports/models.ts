@@ -22,7 +22,7 @@ export function modelsFactory(inst: symbol) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const set = store.models.get(inst)!.set;
     if (!match) return map;
-    if (process.env.NODE_ENV === 'development') {
+    if (__DEV__) {
       invariant(
         ['string', 'undefined'].some(type => typeof match === type) || match instanceof RegExp,
         '请传入有效的参数，当前参数类型为 %s, 但只接受 string、undefined、regexp 的类型',

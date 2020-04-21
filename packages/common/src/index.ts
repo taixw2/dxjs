@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import 'es6-symbol';
 export { Label } from './helper/label';
 export { Effect } from './helper/effect';
 export { Reducer } from './helper/reducer';
@@ -10,4 +9,3 @@ export const TakeEvery = TAKE_EVERY;
 export const TakeLeading = TAKE_LEADING;
 export const TakeLatest = TAKE_LATEST;
 export const Throttle = THROTTLE;
-
