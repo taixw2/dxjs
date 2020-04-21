@@ -1,6 +1,6 @@
 {
   "name": "dxjs",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -11,7 +11,8 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "test": "jest --config scripts/jest/jest.config.js",
-    "build": "node scripts/build.js && tsc -p tsconfig.dts.json"
+    "build": "node scripts/build.js && tsc -p tsconfig.dts.json",
+    "clog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,9 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.9.0",
     "@chores/tsconfig": "^1.0.1",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-angular": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/jest": "^25.2.1",
     "@types/react": "^16.9.34",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -32,15 +36,18 @@
     "babel-jest": "^25.3.0",
     "chalk": "^4.0.0",
     "codecov": "^3.6.5",
+    "conventional-changelog-cli": "^2.0.31",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
     "eslint-plugin-prettier": "^3.1.2",
     "gzip-size": "^5.1.1",
+    "husky": "^4.2.5",
     "invariant": "^2.2.4",
     "jest": "^25.3.0",
     "lerna": "^3.16.5",
+    "lint-staged": "^10.1.6",
     "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
     "prettier": "^1.19.1",
@@ -50,10 +57,24 @@
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-typescript2": "^0.27.0",
     "typescript": "^3.8.3",
     "vuepress": "^1.4.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "packages/**/*.{js,ts}": [
+      "prettier —-write",
+      "eslint --fix",
+      "git add"
+    ]
+  }
 }

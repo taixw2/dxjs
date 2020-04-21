@@ -5,6 +5,14 @@
 
 基于 Redux、Redux-saga、Typescripe 的库，用来组织应用中的副作用和管理状态
 
+### 安装
+
+```sh
+npm install @dxjs/core @dxjs/common
+# 或者
+yarn add @dxjs/core @dxjs/common
+```
+
 ### 快速开始
 
 ```javascript
@@ -42,4 +50,5 @@ class Counter extends DxMoel {
 ### example
 
 - [sample \(by create-react-app\)](./examples/create-react-app)
+- [sample2 \(by taro\)](./examples/taro-sample)
 

@@ -16,3 +16,5 @@ lib/
 *.lock
 
 coverage/
+
+.temp

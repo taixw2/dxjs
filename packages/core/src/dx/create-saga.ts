@@ -18,11 +18,43 @@ import {
 } from 'redux-saga/effects';
 import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 import { AnyAction } from 'redux';
+import * as DxCommon from '@dxjs/common';
+
+interface IsGeneratorExtend extends Function {
+  isGenerator?(): boolean;
+}
+
+function isGenerator(fn?: IsGeneratorExtend) {
+  if (!fn) return false;
+  if ('isGenerator' in Function.prototype) return fn.isGenerator?.();
+  return fn.constructor && 'GeneratorFunction' == fn.constructor.name;
+}
+
+/**
+ * taro 中对装饰器支持不好
+ * 默认则认为所有的 generator 函数都是 effect 函数
+ */
+function hackTaro(model: DxModelInterface) {
+  if (
+    typeof process === 'undefined' ||
+    typeof process.env !== 'object' ||
+    typeof process.env.TARO_ENV === 'undefined'
+  ) {
+    return;
+  }
+
+  Object.getOwnPropertyNames(Object.getPrototypeOf(model)).forEach(key => {
+    if (!isGenerator(model[key])) return;
+    DxCommon.Effect()(model, key, {});
+  });
+}
 
 export function createSaga(model: DxModelInterface): () => Generator<AllEffect<ForkEffect>> {
-  // TODO: effect 增强器优先级降低，后期再重构
   const Model = model.constructor;
-  const effectMates = Reflect.getMetadata(EFFECT_METHODS_KEY, Model) as Set<EffectTypeInterface>;
+  hackTaro(model);
+
+  const effectMates =
+    (Reflect.getMetadata(EFFECT_METHODS_KEY, Model) as Set<EffectTypeInterface>) ?? new Set();
 
   const effects = [...effectMates].map(effectItem => {
     function* effect(action: AnyAction): Generator {

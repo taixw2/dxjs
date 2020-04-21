@@ -11,7 +11,7 @@ const invariant = require('invariant');
 export function collectFactory(inst: symbol) {
   return (name?: string) => {
     return function Decorate(ModelTarget: DxModelContstructor): DxModelContstructor {
-      if (process.env.NODE_ENV === 'development') {
+      if (__DEV__) {
         invariant(
           ModelTarget.prototype instanceof DxModel,
           'collect model 必须继承自 DxModel, 当前 model 类型为 %s',

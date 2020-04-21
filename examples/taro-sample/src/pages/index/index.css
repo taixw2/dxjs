@@ -1,0 +1,18 @@
+
+.index {
+  padding: 40px;
+}
+
+.input {
+  border-bottom: 1px solid #efefef;
+  margin-bottom: 40px;
+  padding: 10px 20px;
+}
+
+.item {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background: #eee;
+  display: block;
+  font-size: 36px;
+}
