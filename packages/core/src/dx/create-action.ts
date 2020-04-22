@@ -5,7 +5,7 @@ import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.inte
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react';
 
-export function createAction(dispatch: Dispatch<AnyAction>, inst: symbol): void {
+export function createAction(inst: symbol, dispatch: Dispatch<AnyAction>): void {
   const models = store.getModels(inst);
   models.set.forEach(Model => {
     const reducers = Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as Map<symbol, string>;
@@ -13,13 +13,9 @@ export function createAction(dispatch: Dispatch<AnyAction>, inst: symbol): void 
 
     if (reducers && reducers.size) {
       reducers.forEach((methodName, actionType) => {
-        Reflect.set(Model, methodName, function action(
-          payload: any,
-          autoDispatch?: boolean,
-        ): AnyAction | void {
+        Reflect.set(Model, methodName, function action(payload: any, autoDispatch?: boolean): AnyAction | void {
           if (autoDispatch) {
-            dispatch({ type: actionType, payload });
-            return;
+            return dispatch({ type: actionType, payload });
           }
           return { type: actionType, payload };
         });
@@ -28,13 +24,9 @@ export function createAction(dispatch: Dispatch<AnyAction>, inst: symbol): void 
 
     if (effects && effects.size) {
       effects.forEach(({ name, actionType }) => {
-        Reflect.set(Model, name, function action(
-          payload: any,
-          autoDispatch?: boolean,
-        ): AnyAction | void {
+        Reflect.set(Model, name, function action(payload: any, autoDispatch?: boolean): AnyAction | void {
           if (autoDispatch) {
-            dispatch({ type: actionType, payload });
-            return;
+            return dispatch({ type: actionType, payload });
           }
           return { type: actionType, payload };
         });
