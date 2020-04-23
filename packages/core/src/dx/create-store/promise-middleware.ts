@@ -18,7 +18,6 @@ export function promiseMiddleware(inst: symbol) {
           });
         });
       }
-
       return next(action);
     };
   };

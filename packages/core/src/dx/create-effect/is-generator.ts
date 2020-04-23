@@ -1,9 +1,9 @@
 interface IsGeneratorExtend extends Function {
-  isGenerator?(): boolean;
+  isGenerator(): boolean;
 }
 
-export function isGenerator(fn?: IsGeneratorExtend) {
+export function isGenerator(fn?: IsGeneratorExtend | Function): fn is GeneratorFunction {
   if (!fn) return false;
-  if ('isGenerator' in Function.prototype) return fn.isGenerator?.();
+  if ('isGenerator' in fn) return fn.isGenerator();
   return fn.constructor && 'GeneratorFunction' == fn.constructor.name;
 }

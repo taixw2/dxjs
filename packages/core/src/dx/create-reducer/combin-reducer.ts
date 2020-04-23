@@ -5,7 +5,7 @@ import { ReducerEnhancer } from '@dxjs/shared/interfaces/dx-reducer-enhancer.int
 import { Reducer } from 'redux';
 
 export function combinReducer<T>(model: DxModelInterface, reducers: Map<SymbolType, SymbolType>) {
-  return (state: T, action: AnyAction) => {
+  return (state: T, action: AnyAction): T => {
     model.state = state || model.state;
     const methodName = reducers.get(action.type);
     if (!methodName) return model.state;
