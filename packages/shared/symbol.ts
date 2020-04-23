@@ -51,7 +51,10 @@ export const EFFECT_HELPERS: SymbolType[] = [TAKE_LATEST, TAKE_EVERY, TAKE_LEADI
  *
  * (Reflect.getMetadata(Model, EFFECT_METHODS_KEY) as Map<Symbol.for, string>)
  */
-export let EFFECT_METHODS_KEY: SymbolType = Symbol.for('__effect_method');
+
+export let EFFECT_METHODS_KEY: SymbolType = '__effect_method_key';
+
+export let EFFECT_METHODS_META: SymbolType = '__effect_method_meta';
 
 if (typeof Symbol === 'function' && Symbol.for) {
   MODEL_NAME = Symbol.for('__model_name');
@@ -63,5 +66,6 @@ if (typeof Symbol === 'function' && Symbol.for) {
   TAKE_EVERY = Symbol.for('__take_every');
   TAKE_LEADING = Symbol.for('__take_leading');
   THROTTLE = Symbol.for('throttle');
-  EFFECT_METHODS_KEY = Symbol.for('__effect_method');
+  EFFECT_METHODS_KEY = Symbol.for('__effect_method_key');
+  EFFECT_METHODS_META = Symbol.for('__effect_method_meta');
 }

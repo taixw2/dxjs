@@ -6,7 +6,7 @@ import { isGenerator } from './is-generator';
  * taro 中对装饰器支持不好
  * 默认则认为所有的 generator 函数都是 effect 函数
  */
-export function hackTaro(model: DxModelInterface) {
+export function hackTaro(model: DxModelInterface): void {
   if (typeof process === 'undefined' || typeof process.env !== 'object' || typeof process.env.TARO_ENV === 'undefined') {
     return;
   }
