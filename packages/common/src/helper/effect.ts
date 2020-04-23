@@ -2,7 +2,7 @@
 import { TAKE_EVERY, EFFECT_METHODS_META, SymbolType, EFFECT_HELPERS, EFFECT_METHODS_KEY } from '@dxjs/shared/symbol';
 import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 
-export function Effect(actionType?: SymbolType, helperType?: SymbolType, ...args: any[]): MethodDecorator {
+export function Effect(actionTypeArg?: SymbolType, helperTypeArg?: any, ...args: any[]): MethodDecorator {
   /**
    * 参数替换：
    * @Effect()
@@ -12,11 +12,12 @@ export function Effect(actionType?: SymbolType, helperType?: SymbolType, ...args
    * @Effect("actionType", Throttle, 350)
    */
   const _defaultActionType = Symbol('__action_type');
-  let _actionType = actionType ?? _defaultActionType;
-  let _helperType = helperType ?? TAKE_EVERY;
-  if (EFFECT_HELPERS.includes(_actionType)) {
-    if (helperType) args.unshift(helperType);
-    [_actionType, _helperType] = [_defaultActionType, _actionType];
+  let _actionType = actionTypeArg ?? _defaultActionType;
+  let _helperType = helperTypeArg ?? TAKE_EVERY;
+
+  if (EFFECT_HELPERS.includes(actionTypeArg!)) {
+    if (helperTypeArg) args.unshift(helperTypeArg);
+    [_actionType, _helperType] = [_defaultActionType, actionTypeArg!];
   }
 
   return (target: any, key: SymbolType, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> => {

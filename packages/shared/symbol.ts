@@ -42,7 +42,6 @@ export let TAKE_LATEST: SymbolType = '__take_latest';
 export let TAKE_EVERY: SymbolType = '__take_every';
 export let TAKE_LEADING: SymbolType = '__take_leading';
 export let THROTTLE: SymbolType = '__throttle';
-export const EFFECT_HELPERS: SymbolType[] = [TAKE_LATEST, TAKE_EVERY, TAKE_LEADING, THROTTLE];
 
 /**
  * effect 方法
@@ -69,3 +68,5 @@ if (typeof Symbol === 'function' && Symbol.for) {
   EFFECT_METHODS_KEY = Symbol.for('__effect_method_key');
   EFFECT_METHODS_META = Symbol.for('__effect_method_meta');
 }
+
+export const EFFECT_HELPERS: SymbolType[] = [TAKE_LATEST, TAKE_EVERY, TAKE_LEADING, THROTTLE];
