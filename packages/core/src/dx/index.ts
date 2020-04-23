@@ -18,6 +18,7 @@ export interface DxFactoryInterface {
     (match: string): DxModelContstructor;
   };
   collect: (name?: string) => (ModelTarget: DxModelContstructor) => DxModelContstructor;
+  inst?: symbol;
 }
 
 export function DxFactory(): DxFactoryInterface {
@@ -28,6 +29,7 @@ export function DxFactory(): DxFactoryInterface {
     create: createFactory(inst),
     getModels: modelsFactory(inst),
     collect: collectFactory(inst),
+    inst: process.env.NODE_ENV === 'test' ? inst : undefined,
   };
 }
 
