@@ -30,4 +30,17 @@ export class ExampleModel extends DxModel implements DxModelInterface {
     const count = yield this.$call(delayGet, payload);
     yield this.$put((ExampleModel as DxModelContstructor).updateCount(count));
   }
+
+  @Effect()
+  *delayUpdate(payload: number): Generator {
+    const count = yield this.$delay(1000, payload);
+    yield this.$put((ExampleModel as DxModelContstructor).updateCount(count));
+    return (count as number) + 10;
+  }
+
+  *normalGeneratorFunction(): Generator {
+    const count = yield this.$delay(1000);
+    yield this.$put((ExampleModel as DxModelContstructor).updateCount(count));
+    return (count as number) + 10;
+  }
 }
