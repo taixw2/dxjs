@@ -16,7 +16,7 @@ jobs:
       - name: Run Test
         uses: borales/actions-yarn@v2.0.0
         with:
-          cmd: test
+          cmd: test:cov
 
       - name: Upload coverage
         uses: codecov/codecov-action@v1.0.2
