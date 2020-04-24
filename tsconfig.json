@@ -1,7 +1,7 @@
 {
   "extends": "@chores/tsconfig",
   "compilerOptions": {
-    "lib": ["DOM", "ESNext", "es2015.reflect"],
+    "lib": ["DOM", "ESNext", "ESNext.Symbol"],
     "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "downlevelIteration": true,
