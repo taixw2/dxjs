@@ -1,3 +1,24 @@
+# [1.1.0](https://github.com/taixw2/dx/compare/v1.0.2...v1.1.0) (2020-04-24)
+
+
+### Bug Fixes
+
+* 一些编译时的 bug ([8d208ac](https://github.com/taixw2/dx/commit/8d208ac0dfc110940ce7e9ebd32f411d617f993f))
+
+
+### Features
+
+* **@dxjs/core:** 为测试环境返回 inst ([6d89047](https://github.com/taixw2/dx/commit/6d890477ef6ffbfb615d2f9e240c6bcd43577493))
+* **@dxjs/core:** 拆分 create-reducer 目录 ([9b3d910](https://github.com/taixw2/dx/commit/9b3d9101a041e4ffe99abe50eb65405475a09bee))
+* **@dxjs/core:** 拆分 saga 目录 ([a27fda7](https://github.com/taixw2/dx/commit/a27fda7f5fbe1b3c7f0329a1074417e9132bf7fe))
+* **@dxjs/core:** 新增 isDxModel 工具函数 ([61682f1](https://github.com/taixw2/dx/commit/61682f1f3a9114902970d7d82c9e19d13f9755ca))
+* **@dxjs/core:** 新增 promise & 部分逻辑重构 ([b125393](https://github.com/taixw2/dx/commit/b1253930312cf46fc3c60556d1c6b4e0e02c8bef))
+* **@dxjs/core:** 新增两个 helper ([6c0eb1d](https://github.com/taixw2/dx/commit/6c0eb1df06e4856e26db3abc0a2247b8d208624a))
+* **@dxjs/core:** 记录所有的 action type ([248793b](https://github.com/taixw2/dx/commit/248793b6ec8da533b7b212e3d383105bcd74442b))
+* **example:** 新增 taro example ([016b060](https://github.com/taixw2/dx/commit/016b06029070d5514dfe5c49c2b9729ebb3db0bf))
+
+
+
 ## 1.0.2 (2020-04-21)
 
 
