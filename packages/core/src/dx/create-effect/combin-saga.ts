@@ -15,7 +15,7 @@ export function combinSaga(model: DxModelInterface, meta: EffectTypeInterface): 
           currentEffect && isGenerator(currentEffect),
           '副作用函数不是一个 generator 函数，函数名为: %s, 如果确定不是此原因，请提交 issus: %s',
           meta.name,
-          __ISSUE__,
+          '__ISSUE__',
         );
       }
 

@@ -1,5 +1,7 @@
 import { Enhancer, EnhancerFilter } from '@dxjs/shared/interfaces/dx-enhancer.interface';
 
+const invariant = require('invariant');
+
 function isEnhancerFilter<T>(enhancer: unknown): enhancer is EnhancerFilter<T> {
   return ['include', 'exclude', 'enhancer'].some(key => Reflect.has(enhancer as object, key));
 }
