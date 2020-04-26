@@ -1,0 +1,33 @@
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dep
+        run: yarn
+
+      - name: Install Dep
+        run: yarn build
+
+      # publish to npm
+      - run: yarn publish build/common
+      - run: yarn publish build/core
+      - run: yarn publish build/core
