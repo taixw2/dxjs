@@ -27,6 +27,6 @@ jobs:
         run: yarn build
 
       # publish to npm
-      - run: yarn publish build/common
-      - run: yarn publish build/core
-      - run: yarn publish build/core
+      - run: yarn publish build/common --patch
+      - run: yarn publish build/core --patch
+      - run: yarn publish build/core --patch
