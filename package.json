@@ -53,6 +53,7 @@
     "ncp": "^2.0.0",
     "prettier": "^1.19.1",
     "react": "^16.13.1",
+    "rimraf": "^3.0.2",
     "rmfr": "^2.0.0",
     "rollup": "^2.6.1",
     "rollup-plugin-babel": "^4.4.0",
@@ -68,7 +69,8 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "rimraf build"
     }
   },
   "lint-staged": {
