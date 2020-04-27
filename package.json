@@ -1,6 +1,6 @@
 {
   "name": "dxjs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -37,7 +37,9 @@
     "babel-jest": "^25.3.0",
     "chalk": "^4.0.0",
     "codecov": "^3.6.5",
+    "conventional-changelog-angular": "^5.0.6",
     "conventional-changelog-cli": "^2.0.31",
+    "conventional-commits-parser": "^3.0.8",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.1",
@@ -62,6 +64,7 @@
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-typescript2": "^0.27.0",
+    "semver": "^7.3.2",
     "typescript": "^3.8.3",
     "vuepress": "^1.4.0"
   },
@@ -70,7 +73,7 @@
     "hooks": {
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged",
-      "pre-push": "rimraf build"
+      "pre-push": "node scripts/release.js"
     }
   },
   "lint-staged": {
