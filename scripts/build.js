@@ -14,46 +14,15 @@ const gzip = require('gzip-size');
 const babelCore = require('@babel/core');
 const react = require('react');
 const reactDom = require('react-dom');
-
-const packages = [
-  {
-    entry: '@dxjs/core',
-    global: 'Dx',
-    externals: [
-      { entry: 'react', global: 'React' },
-      { entry: 'react-dom', global: 'ReactDom' },
-      { entry: 'redux', global: 'redux' },
-      { entry: 'react-redux', global: 'reactRedux' },
-      { entry: '@dxjs/common', global: 'DxCommon' },
-      { entry: 'reflect-metadata', global: '' },
-    ],
-  },
-  {
-    entry: '@dxjs/common',
-    global: 'DxCommon',
-    externals: [
-      { entry: 'react', global: 'React' },
-      { entry: 'react-dom', global: 'ReactDom' },
-      { entry: 'react-redux', global: 'ReactRedux' },
-      { entry: 'reflect-metadata', global: '' },
-    ],
-  },
-];
-
-const UMD = 'UMD';
-const UMD_DEV = 'UMD_DEV';
-const CJS = 'CJS';
-const CJS_DEV = 'CJS_DEV';
-
-const bundleTypes = [UMD, UMD_DEV, CJS, CJS_DEV];
+const bundles = require('./bundles');
 
 function getPackgeFileName(packageName, bundleType) {
   switch (bundleType) {
-    case CJS:
-    case UMD:
+    case bundles.CJS:
+    case bundles.UMD:
       return `${packageName}.production.min.js`;
-    case UMD_DEV:
-    case CJS_DEV:
+    case bundles.bundles.UMD_DEV:
+    case bundles.bundles.CJS_DEV:
       return `${packageName}.development.js`;
     default:
       //
@@ -63,11 +32,11 @@ function getPackgeFileName(packageName, bundleType) {
 
 function getFormat(bundleType) {
   switch (bundleType) {
-    case UMD_DEV:
-    case UMD:
+    case bundles.bundles.UMD_DEV:
+    case bundles.UMD:
       return 'umd';
-    case CJS:
-    case CJS_DEV:
+    case bundles.CJS:
+    case bundles.bundles.CJS_DEV:
       return 'cjs';
     default:
       //
@@ -82,11 +51,11 @@ function getOutoutPath(packageName, bundleType, filename) {
 
 function getNodeEnv(bundleType) {
   switch (bundleType) {
-    case CJS:
-    case UMD:
+    case bundles.CJS:
+    case bundles.UMD:
       return 'production';
-    case UMD_DEV:
-    case CJS_DEV:
+    case bundles.bundles.UMD_DEV:
+    case bundles.bundles.CJS_DEV:
       return 'development';
     default:
       //
@@ -129,7 +98,7 @@ async function createBundle(package, bundleType) {
         commonjs({
           namedExports: {
             react: Object.keys(react),
-            'react-dom': Object.keys(reactDom)
+            'react-dom': Object.keys(reactDom),
           },
         }),
         babel({
@@ -193,12 +162,12 @@ function copyResource() {
 async function build() {
   await rmfr('build');
 
-  for (let index = 0; index < packages.length; index++) {
-    const package = packages[index];
-    await createBundle(package, UMD);
-    await createBundle(package, UMD_DEV);
-    await createBundle(package, CJS);
-    await createBundle(package, CJS_DEV);
+  for (let index = 0; index < bundles.packages.length; index++) {
+    const package = bundles.packages[index];
+    await createBundle(package, bundles.UMD);
+    await createBundle(package, bundles.bundles.UMD_DEV);
+    await createBundle(package, bundles.CJS);
+    await createBundle(package, bundles.bundles.CJS_DEV);
   }
   // 遍历所有的包
   await copyResource();
