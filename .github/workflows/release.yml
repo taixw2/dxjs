@@ -1,0 +1,32 @@
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dep
+        run: yarn
+
+      - name: Install Dep
+        run: yarn build
+
+      # publish to npm
+      # - run: npm publish build/common
+      # - run: npm publish build/core
+      # - run: npm publish build/shared

@@ -14,9 +14,6 @@ const gzip = require('gzip-size');
 const babelCore = require('@babel/core');
 const react = require('react');
 const reactDom = require('react-dom');
-const reactIs = require('react-is');
-const propTypes = require('prop-types');
-const reactRedux = require('react-redux');
 
 const packages = [
   {
@@ -25,7 +22,10 @@ const packages = [
     externals: [
       { entry: 'react', global: 'React' },
       { entry: 'react-dom', global: 'ReactDom' },
+      { entry: 'redux', global: 'redux' },
+      { entry: 'react-redux', global: 'reactRedux' },
       { entry: '@dxjs/common', global: 'DxCommon' },
+      { entry: 'reflect-metadata', global: '' },
     ],
   },
   {
@@ -34,6 +34,8 @@ const packages = [
     externals: [
       { entry: 'react', global: 'React' },
       { entry: 'react-dom', global: 'ReactDom' },
+      { entry: 'react-redux', global: 'ReactRedux' },
+      { entry: 'reflect-metadata', global: '' },
     ],
   },
 ];
@@ -117,16 +119,17 @@ async function createBundle(package, bundleType) {
       input: entryFile,
       external: externals.map(v => v.entry),
       plugins: [
+        replace({
+          __DEV__: !isProduction,
+          __ISSUE__: 'https://github.com/taixw2/dxjs/issues',
+        }),
         resolve({
           extensions: ['.js', '.ts'],
         }),
         commonjs({
           namedExports: {
             react: Object.keys(react),
-            'react-dom': Object.keys(reactDom),
-            'react-redux': Object.keys(reactRedux),
-            'react-is': Object.keys(reactIs),
-            'prop-types': Object.keys(propTypes),
+            'react-dom': Object.keys(reactDom)
           },
         }),
         babel({
@@ -135,10 +138,7 @@ async function createBundle(package, bundleType) {
           runtimeHelpers: true,
           extensions: [...babelCore.DEFAULT_EXTENSIONS, '.ts'],
         }),
-        replace({
-          __DEV__: !isProduction,
-        }),
-        isProduction && terser()
+        isProduction && terser(),
       ],
     });
 

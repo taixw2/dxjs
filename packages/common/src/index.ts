@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 export { Label } from './helper/label';
 export { Effect } from './helper/effect';
 export { Reducer } from './helper/reducer';

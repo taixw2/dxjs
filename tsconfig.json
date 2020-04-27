@@ -1,13 +1,13 @@
 {
   "extends": "@chores/tsconfig",
   "compilerOptions": {
-    "lib": ["DOM", "ESNext", "es2015.reflect"],
+    "lib": ["DOM", "ESNext", "ESNext.Symbol"],
     "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "module": "UMD"
   },
-  "include": ["packages/**/*", "extension.typeing.ts", "__tests/**/*"],
+  "include": ["packages/**/*"],
   "exclude": ["node_modules", "scripts"]
 }

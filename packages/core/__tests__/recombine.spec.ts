@@ -5,7 +5,7 @@ import { store } from '../src/helper/store';
 import { ExampleModel } from './example-model';
 import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { createReducer } from '../src/dx/create-reducer';
-import { createSaga } from '../src/dx/create-saga';
+import { createEffect } from '../src/dx/create-effect';
 import { all, spawn } from 'redux-saga/effects';
 
 describe('dx recombin', () => {
@@ -22,10 +22,8 @@ describe('dx recombin', () => {
   });
 
   it('create Action', () => {
-    createAction(reduxStore.dispatch, inst);
-    expect(['updateCount', 'asyncUpdateCount'].every(k => Reflect.has(ExampleModelStatic, k))).toBe(
-      true,
-    );
+    createAction(inst, reduxStore.dispatch);
+    expect(['updateCount', 'asyncUpdateCount'].every(k => Reflect.has(ExampleModelStatic, k))).toBe(true);
     expect(ExampleModelStatic.updateCount('payload_data')).toMatchObject({
       payload: 'payload_data',
     });
@@ -46,8 +44,10 @@ describe('dx recombin', () => {
     });
 
     const model = new ExampleModelStatic();
-    const reducer = createReducer(model, inst);
+    const reducer = createReducer(inst, model);
 
+    expect(reducer).not.toBeUndefined();
+    if (!reducer) return;
     const state = reducer({ count: 3 }, { type: 'ns/count', payload: 2 });
     expect(state).toMatchObject({ count: 5 });
     expect(mockFn.mock.calls.length).toBe(1);
@@ -56,14 +56,15 @@ describe('dx recombin', () => {
   it('create saga', () => {
     const model = new ExampleModelStatic();
 
-    const saga = createSaga(model);
-
-    const gen = saga();
+    const effect = createEffect(inst, model);
+    expect(effect).not.toBeUndefined();
+    if (!effect) return;
+    const gen = effect();
     expect(typeof gen.next).toBe('function');
 
     const allEffect = gen.next().value;
-    const fnRef = allEffect.payload[0].payload.fn;
+    const fnRefs = allEffect.payload.map((v: any) => spawn(v.payload.fn));
 
-    expect(allEffect).toMatchObject(all([spawn(fnRef)]));
+    expect(allEffect).toMatchObject(all(fnRefs));
   });
 });
