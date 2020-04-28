@@ -21,8 +21,8 @@ function getPackgeFileName(packageName, bundleType) {
     case bundles.CJS:
     case bundles.UMD:
       return `${packageName}.production.min.js`;
-    case bundles.bundles.UMD_DEV:
-    case bundles.bundles.CJS_DEV:
+    case bundles.UMD_DEV:
+    case bundles.CJS_DEV:
       return `${packageName}.development.js`;
     default:
       //
@@ -32,11 +32,11 @@ function getPackgeFileName(packageName, bundleType) {
 
 function getFormat(bundleType) {
   switch (bundleType) {
-    case bundles.bundles.UMD_DEV:
+    case bundles.UMD_DEV:
     case bundles.UMD:
       return 'umd';
     case bundles.CJS:
-    case bundles.bundles.CJS_DEV:
+    case bundles.CJS_DEV:
       return 'cjs';
     default:
       //
@@ -54,8 +54,8 @@ function getNodeEnv(bundleType) {
     case bundles.CJS:
     case bundles.UMD:
       return 'production';
-    case bundles.bundles.UMD_DEV:
-    case bundles.bundles.CJS_DEV:
+    case bundles.UMD_DEV:
+    case bundles.CJS_DEV:
       return 'development';
     default:
       //
@@ -165,9 +165,9 @@ async function build() {
   for (let index = 0; index < bundles.packages.length; index++) {
     const package = bundles.packages[index];
     await createBundle(package, bundles.UMD);
-    await createBundle(package, bundles.bundles.UMD_DEV);
+    await createBundle(package, bundles.UMD_DEV);
     await createBundle(package, bundles.CJS);
-    await createBundle(package, bundles.bundles.CJS_DEV);
+    await createBundle(package, bundles.CJS_DEV);
   }
   // 遍历所有的包
   await copyResource();
