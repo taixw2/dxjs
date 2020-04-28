@@ -6,6 +6,7 @@ import { store } from '../../helper/store';
 import { combinSaga } from './combin-saga';
 import { hackTaro } from './hack-taro';
 import { securityAccessMap } from '../../helper/sec-access-map';
+import { createEffectContext } from './create-effect-context';
 
 export function createEffect(inst: symbol, model: DxModelInterface): void | (() => Generator<AllEffect<ForkEffect>>) {
   const Model = model.constructor;
@@ -22,7 +23,7 @@ export function createEffect(inst: symbol, model: DxModelInterface): void | (() 
 
   const currentSaga: ForkEffect[] = Array.from(effects).map(item => {
     actionTypes.effects.add(item.actionType);
-    return combinSaga(model, item);
+    return combinSaga(model, item, createEffectContext(inst, model, item));
   });
 
   return function* saga(): Generator<AllEffect<ForkEffect>> {
