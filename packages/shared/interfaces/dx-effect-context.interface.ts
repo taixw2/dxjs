@@ -2,7 +2,7 @@
 
 import { Dispatch } from 'react';
 import { EffectTypeInterface } from './dx-effect-type.interface';
-import { SpyStatic } from './dx-spy.interface';
+import { DisguiserStatic } from './dx-disguiser.interface';
 import { EnhancerFunctionSupportInterface } from './dx-effect-support.interface';
 
 export interface BaseEffectContextInterface<T> {
@@ -15,6 +15,8 @@ export interface BaseEffectContextInterface<T> {
   meta: EffectTypeInterface;
 
   getState: () => any;
+
+  [key: string]: any;
 }
 
 export interface EffectContextInterface<T> extends BaseEffectContextInterface<T> {
@@ -22,5 +24,5 @@ export interface EffectContextInterface<T> extends BaseEffectContextInterface<T>
 
   guards: EnhancerFunctionSupportInterface[];
 
-  spies: SpyStatic[];
+  disguisers: DisguiserStatic[];
 }

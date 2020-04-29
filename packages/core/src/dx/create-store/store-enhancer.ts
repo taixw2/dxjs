@@ -6,7 +6,7 @@ export function storeEnhancer(inst: symbol, options: CreateOption): void {
   store.enhancer.set(inst, {
     reducerEnhancer: createEnhancer(options.reducerEnhancer),
     sentinels: createEnhancer(options.sentinels),
-    spies: createEnhancer(options.spies),
+    disguisers: createEnhancer(options.disguisers),
     guards: createEnhancer(options.guards),
   });
 }
