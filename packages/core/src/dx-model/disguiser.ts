@@ -2,10 +2,11 @@ import { DxBase } from './base';
 import { DisguiserBaseInterface } from '@dxjs/shared/interfaces/dx-disguiser.interface';
 import { AnyAction } from 'redux';
 import { DISGUISER_IO, DISGUISER_ABORT, DISGUISER_NEXT } from '@dxjs/shared/symbol';
-import { EffectContextInterface } from '@dxjs/shared/interfaces/dx-effect-context.interface';
+import { BaseEffectContextInterface } from '@dxjs/shared/interfaces/dx-effect-context.interface';
 
-export class Disguiser<T extends AnyAction> extends DxBase implements DisguiserBaseInterface<T> {
-  constructor(private context: EffectContextInterface<T>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class Disguiser<T extends AnyAction = any> extends DxBase implements DisguiserBaseInterface<T> {
+  constructor(private context: BaseEffectContextInterface<T>) {
     super();
   }
 

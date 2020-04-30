@@ -22,6 +22,7 @@ export function createEffectHandler(model: DxModelInterface, meta: EffectTypeInt
       return resolve;
     } catch (error) {
       action.__dxjs_reject?.(error);
+      throw error;
     }
   };
 }
