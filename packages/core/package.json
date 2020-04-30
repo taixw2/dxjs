@@ -40,23 +40,25 @@
     "@babel/core": "^7.9.0",
     "@chores/tsconfig": "^1.0.1",
     "@types/invariant": "^2.2.31",
+    "@types/koa-compose": "^3.2.5",
     "@types/react": "^16.9.29",
     "@types/react-redux": "^7.1.7",
+    "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
-    "reflect-metadata": "^0.1.13",
-    "react-dom": "^16.13.1"
+    "reflect-metadata": "^0.1.13"
   },
   "dependencies": {
-    "invariant": "^2.2.4",
     "@dxjs/common": "^1.0.1",
     "@dxjs/shared": "^1.0.0",
+    "invariant": "^2.2.4",
+    "koa-compose": "^4.1.0",
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3"
   },
   "peerDependencies": {
-    "react-redux": "*",
     "es6-symbol": "*",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-redux": "*"
   }
 }

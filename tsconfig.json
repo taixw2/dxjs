@@ -5,6 +5,7 @@
     "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "downlevelIteration": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "module": "UMD"
   },
