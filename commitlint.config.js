@@ -1,1 +1,3 @@
-module.exports = {extends: ['@commitlint/config-conventional']};
+const config = require('@commitlint/config-conventional');
+config.rules['type-enum'][2].push('release');
+module.exports = config;
