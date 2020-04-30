@@ -45,7 +45,6 @@ function updatePackageVersion() {
 
 function updateGlobalVersion() {
   const version = updateVersion(path.join(CWD, 'package.json'));
-
   cp.execSync('git tag v' + version);
 }
 
@@ -53,7 +52,8 @@ function run() {
   updateGlobalVersion();
   updatePackageVersion();
 
-  cp.execSync('git add package.json && git add */**/package.json && git commit --amend --no-edit');
+  cp.execSync('npm run clog');
+  cp.execSync('git add package.json && CHANGELOG.md && git add */**/package.json && git commit --amend --no-edit');
 }
 
 run();
