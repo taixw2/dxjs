@@ -19,7 +19,7 @@ export interface BaseEffectContextInterface<T> {
   [key: string]: any;
 }
 
-export interface EffectContextInterface<T> extends BaseEffectContextInterface<T> {
+export interface EffectContextInterface<T = any> extends BaseEffectContextInterface<T> {
   sentinels: EnhancerFunctionSupportInterface[];
 
   guards: EnhancerFunctionSupportInterface[];

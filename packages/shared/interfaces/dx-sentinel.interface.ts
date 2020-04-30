@@ -22,9 +22,11 @@ export interface BaseSentinelInterface<T extends AnyAction> {
   dispatchCurrentAction<P>(payload?: P): T;
 }
 
-export interface SentinelInterface<T extends AnyAction> extends BaseSentinelInterface<T> {
+export interface SentinelInterface<T extends AnyAction = any> extends BaseSentinelInterface<T> {
   /**
    * 实现该方法，返回 false 则 effect 执行
    */
   sentinel(): Promise<boolean | void>;
 }
+
+export type SentinelStatic = { new (): SentinelInterface };

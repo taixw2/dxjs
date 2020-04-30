@@ -30,10 +30,12 @@ export interface DisguiserBaseInterface<T extends AnyAction> extends DxBaseInter
   dispatchCurrentAction(): T;
 }
 
-export interface DisguiserInterface<T extends AnyAction> extends DisguiserBaseInterface<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface DisguiserInterface<T extends AnyAction = any> extends DisguiserBaseInterface<T> {
   disguiser(): Generator;
 }
 
 export interface DisguiserStatic {
-  new <T extends AnyAction>(context: BaseEffectContextInterface<T>): DisguiserInterface<T>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  new <T extends AnyAction = any>(context: BaseEffectContextInterface<T>): DisguiserInterface<T>;
 }

@@ -1,5 +1,7 @@
 import { EnhancerSupportInterface } from './dx-effect-support.interface';
 import { DisguiserStatic } from './dx-disguiser.interface';
+import { GuardInterface } from './dx-guard.interface';
+import { SentinelInterface } from './dx-sentinel.interface';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface ReducerEnhancer {
@@ -17,7 +19,7 @@ export type Enhancer<T> = EnhancerFilter<T> | T;
 
 export interface DxEnhancer {
   reducerEnhancer?: Enhancer<ReducerEnhancer>[];
-  sentinels?: Enhancer<EnhancerSupportInterface>[];
+  sentinels?: Enhancer<EnhancerSupportInterface<SentinelInterface>>[];
   disguisers?: Enhancer<DisguiserStatic>[];
-  guards?: Enhancer<EnhancerSupportInterface>[];
+  guards?: Enhancer<EnhancerSupportInterface<GuardInterface>>[];
 }
