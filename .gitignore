@@ -8,7 +8,7 @@ build/
 
 # 暂时不提交
 # scripts/
-docs
+docs/.vuepress
 
 lib/
 
