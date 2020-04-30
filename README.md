@@ -2,6 +2,7 @@
 
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/taixw2/dx/master.svg?style=flat-square)](https://codecov.io/gh/taixw2/dx/)
 [![NPM Version](https://img.shields.io/npm/v/@dxjs/core?style=flat)](https://npmjs.com/package/@dxjs/core)
+[![Build Release](https://github.com/taixw2/dxjs/workflows/Release/badge.svg)](https://github.com/taixw2/dxjs/workflows/Release/badge.svg)
 
 基于 Redux、React-Redux、Redux-saga、Typescripe 的状态管理库
 

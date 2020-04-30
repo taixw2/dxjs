@@ -1,3 +1,37 @@
+# [1.2.0](https://github.com/taixw2/dx/compare/v1.0.2...v1.2.0) (2020-04-30)
+
+
+### Bug Fixes
+
+* miss npm token env ([fe5f312](https://github.com/taixw2/dx/commit/fe5f3127683c0884af86a079b90da7b44676f4c6))
+* no publish with current version ([00c3f0f](https://github.com/taixw2/dx/commit/00c3f0f19b16dfd309d30d22cde8d5840a7ba9dc))
+* publish "The following paths are ignored" ([5481db7](https://github.com/taixw2/dx/commit/5481db7e0c8895d9f1f9ed99ed06ce22b7337cad))
+* publish auto increment ([26837db](https://github.com/taixw2/dx/commit/26837db4d529a2a98bb7be935b751247f8a083d0))
+* 一些编译时的 bug ([124a68b](https://github.com/taixw2/dx/commit/124a68bc399c1dda421a23671a5d55ab205028a6))
+
+
+### Features
+
+* 获取方法中的增强器 ([cfbc5e2](https://github.com/taixw2/dx/commit/cfbc5e2cd214020be52fc3856681818206438f82))
+* **@dxjs/core:** effect 超类 + ts声明 ([0841a71](https://github.com/taixw2/dx/commit/0841a715503fd8cacc23ebcf3211ec8514cc1540))
+* **@dxjs/core:** 为测试环境返回 inst ([d888bcf](https://github.com/taixw2/dx/commit/d888bcf77b02a5578b93d73bc0dc0a4b2081e3c7))
+* **@dxjs/core:** 拆分 combin saga ([d8419a4](https://github.com/taixw2/dx/commit/d8419a4dec75d985692e26c8bc9198e0faddd146))
+* **@dxjs/core:** 拆分 create-reducer 目录 ([86f04b3](https://github.com/taixw2/dx/commit/86f04b3e334dbd91afe984252df9f6d574fcd9e2))
+* **@dxjs/core:** 拆分 saga 目录 ([8414bb3](https://github.com/taixw2/dx/commit/8414bb37cb78a5b5890374239e55eebcdaa44d85))
+* **@dxjs/core:** 新增 effect 哨兵,伪装者,守卫 功能 ([bf37cba](https://github.com/taixw2/dx/commit/bf37cbad57fa65334173f41075c12322d2d6825d))
+* **@dxjs/core:** 新增 isDxModel 工具函数 ([270bf0c](https://github.com/taixw2/dx/commit/270bf0cabea3e229ffc0e0aed0307e71d4677861))
+* **@dxjs/core:** 新增 promise & 部分逻辑重构 ([d953aa1](https://github.com/taixw2/dx/commit/d953aa196779bc74e899b41eda7ab85994aa66fc))
+* **@dxjs/core:** 新增 snetinel 功能 ([255fc71](https://github.com/taixw2/dx/commit/255fc713416ebfd9b17581eafd3904ffc855e13f))
+* **@dxjs/core:** 新增两个 helper ([efb2c33](https://github.com/taixw2/dx/commit/efb2c332b5cfc0ff9fba9bf14bae005e72abe75a))
+* **@dxjs/core:** 记录所有的 action type ([63140fc](https://github.com/taixw2/dx/commit/63140fc6dba04610ec929b6e83e92ab533429c88))
+* **@dxjs/shared:** 新增 哨兵,伪装者,守卫 声明类型 ([f1e86bf](https://github.com/taixw2/dx/commit/f1e86bf5c27348509bf1d2ed78096a56f10b5060))
+* create release action ([5d7a82b](https://github.com/taixw2/dx/commit/5d7a82b53b57d02b119ddc5c690672d06cffae44))
+* create release script and refactor build ([2488c34](https://github.com/taixw2/dx/commit/2488c34d8a487d7ab47855424254c0252c2203d2))
+* 完善 readme ([9011d93](https://github.com/taixw2/dx/commit/9011d936d9f834fbbdc94872b4e337d101b7ceb0))
+* **example:** 新增 taro example ([016b060](https://github.com/taixw2/dx/commit/016b06029070d5514dfe5c49c2b9729ebb3db0bf))
+
+
+
 # [1.1.0](https://github.com/taixw2/dx/compare/v1.0.2...v1.1.0) (2020-04-24)
 
 

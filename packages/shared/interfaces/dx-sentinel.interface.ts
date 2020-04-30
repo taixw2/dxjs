@@ -7,7 +7,7 @@
 
 import { AnyAction } from 'redux';
 
-export interface BaseGuardInterface<T extends AnyAction> {
+export interface BaseSentinelInterface<T extends AnyAction> {
   /**
    * 获取整个状态树
    */
@@ -22,11 +22,11 @@ export interface BaseGuardInterface<T extends AnyAction> {
   dispatchCurrentAction<P>(payload?: P): T;
 }
 
-export interface GuardInterface<T extends AnyAction = any> extends BaseGuardInterface<T> {
+export interface SentinelInterface<T extends AnyAction = any> extends BaseSentinelInterface<T> {
   /**
    * 实现该方法，返回 false 则 effect 执行
    */
-  guard(error?: Error, data?: any): Promise<boolean | void>;
+  sentinel(): Promise<boolean | void>;
 }
 
-export type GuardStatic = { new (): GuardInterface };
+export type SentinelStatic = { new (): SentinelInterface };

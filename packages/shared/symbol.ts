@@ -55,6 +55,10 @@ export let EFFECT_METHODS_KEY: SymbolType = '__effect_method_key';
 
 export let EFFECT_METHODS_META: SymbolType = '__effect_method_meta';
 
+export let GUARD_KEY: SymbolType = '__guard_key';
+export let SENTINEL_KEY: SymbolType = '__sentinel_key';
+export let DISGUISER_KEY: SymbolType = '__disguiser_key';
+
 if (typeof Symbol === 'function' && Symbol.for) {
   MODEL_NAME = Symbol.for('__model_name');
   RECORD_REDUCER_KEYS = Symbol.for('__record_reducer_keys');
@@ -67,6 +71,13 @@ if (typeof Symbol === 'function' && Symbol.for) {
   THROTTLE = Symbol.for('throttle');
   EFFECT_METHODS_KEY = Symbol.for('__effect_method_key');
   EFFECT_METHODS_META = Symbol.for('__effect_method_meta');
+  GUARD_KEY = Symbol.for('__guard_key');
+  SENTINEL_KEY = Symbol.for('__sentinel_key');
+  DISGUISER_KEY = Symbol.for('__disguiser_key');
 }
 
 export const EFFECT_HELPERS: SymbolType[] = [TAKE_LATEST, TAKE_EVERY, TAKE_LEADING, THROTTLE];
+
+export const DISGUISER_IO = '@dxjs/IO';
+export const DISGUISER_NEXT = 'NEXT';
+export const DISGUISER_ABORT = 'ABORT';

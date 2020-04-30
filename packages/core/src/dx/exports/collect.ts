@@ -10,7 +10,7 @@ const invariant = require('invariant');
 
 export function collectFactory(inst: symbol) {
   return (name?: string) => {
-    return function Decorate(ModelTarget: DxModelContstructor): DxModelContstructor {
+    return function Decorate<T extends DxModelContstructor>(ModelTarget: T): T {
       if (__DEV__) {
         invariant(
           ModelTarget.prototype instanceof DxModel,

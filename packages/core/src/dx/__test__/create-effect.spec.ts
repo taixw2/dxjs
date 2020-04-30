@@ -38,6 +38,13 @@ describe('create effect', () => {
     expect(isGenerator(model.asyncUpdateCount)).toBe(true);
     expect(isGenerator(model.updateCount)).toBe(false);
     expect(isGenerator(model.state as any)).toBe(false);
+    expect(isGenerator()).toBe(false);
+    Reflect.set(Function.prototype, 'isGenerator', () => true);
+    expect(
+      isGenerator(function() {
+        return true;
+      }),
+    ).toBe(true);
   });
 
   it('create effect, no collect model', () => {

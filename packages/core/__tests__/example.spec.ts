@@ -27,6 +27,12 @@ describe('Dxjs example', () => {
       *asyncUpdateCount(payload: number): any {
         const count = yield this.$call(delayGet, payload);
         yield this.$put(ExampleModelStatic.updateCount(count));
+        return true;
+      }
+
+      @Effect()
+      *asyncUpdateCountReturnData(): any {
+        return { data: true };
       }
     }
 
@@ -51,9 +57,7 @@ describe('Dxjs example', () => {
     _Dx.collect('example')(ExampleModelStatic);
     _Dx.createStore();
     const actions = ['asyncUpdateCount', 'updateCount'];
-    expect(actions.every(actionKey => typeof ExampleModelStatic[actionKey] === 'function')).toBe(
-      true,
-    );
+    expect(actions.every(actionKey => typeof ExampleModelStatic[actionKey] === 'function')).toBe(true);
   });
 
   it('自动生成 action, 返回 action type', () => {
@@ -77,5 +81,41 @@ describe('Dxjs example', () => {
     ExampleModelStatic.asyncUpdateCount(10, true);
     await delayGet();
     expect(store.getState()).toMatchObject({ example: { count: 11 } });
+  });
+
+  it('哨兵阻止执行 effect', async () => {
+    _Dx.collect('example')(ExampleModelStatic);
+
+    // 当 return false 的时候不会执行 effect
+    async function mockSentinel(): Promise<boolean> {
+      return false;
+    }
+
+    const store = _Dx.createStore({
+      sentinels: [mockSentinel],
+    });
+
+    ExampleModelStatic.asyncUpdateCount(10, true);
+
+    await delayGet();
+    expect(store.getState()).toMatchObject({ example: { count: 1 } });
+  });
+
+  it('守卫能接收返回值', async function() {
+    _Dx.collect('example')(ExampleModelStatic);
+    const mockFn = jest.fn();
+
+    _Dx.createStore({
+      guards: [mockFn],
+    });
+
+    ExampleModelStatic.asyncUpdateCountReturnData(10, true);
+
+    await delayGet();
+    expect(mockFn.mock.calls.length).toBe(1);
+    // error === null
+    expect(mockFn.mock.calls[0][1]).toBe(null);
+    // 返回值
+    expect(mockFn.mock.calls[0][2]).toEqual({ data: true });
   });
 });

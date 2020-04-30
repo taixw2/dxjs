@@ -1,49 +1,40 @@
 import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { ForkEffect, call } from 'redux-saga/effects';
+import { createEffectHandler } from './create-effect-handler';
+import { createEffectFork } from './create-effect-fork';
 import { AnyAction } from 'redux';
-import { isGenerator } from './is-generator';
-import { TAKE_LATEST, TAKE_EVERY, TAKE_LEADING, THROTTLE } from '@dxjs/shared/symbol';
-import { spawn, takeLatest, takeEvery, takeLeading, throttle, ForkEffect } from 'redux-saga/effects';
-const invariant = require('invariant');
+import { EffectContextInterface } from '@dxjs/shared/interfaces/dx-effect-context.interface';
+import compose from 'koa-compose';
+import { composeDisguiser } from './compose-disguisers';
 
-export function combinSaga(model: DxModelInterface, meta: EffectTypeInterface): ForkEffect {
-  function* effectHandler(action: AnyAction): Generator {
+export function combinSaga(
+  model: DxModelInterface,
+  meta: EffectTypeInterface,
+  contextFactory: <T extends AnyAction>(action: T) => EffectContextInterface<T>,
+): ForkEffect {
+  function* effect(action: AnyAction): Generator {
+    const context = contextFactory(action);
+
+    // 哨兵在执行真实的 effect 之前执行
+    // 当其中一个返回 false 之后，则会中断整个 effect
+    for (let index = 0; index < context.sentinels.length; index++) {
+      const canNext = yield call(context.sentinels[index], context);
+      if (canNext === false) return;
+    }
+    const effect = createEffectHandler(model, meta);
+
     try {
-      const currentEffect = Reflect.get(model, meta.name);
-      if (__DEV__) {
-        invariant(
-          currentEffect && isGenerator(currentEffect),
-          '副作用函数不是一个 generator 函数，函数名为: %s, 如果确定不是此原因，请提交 issus: %s',
-          meta.name,
-          '__ISSUE__',
-        );
-      }
+      // 伪装者会被植入到 effect 中
+      const data = yield* composeDisguiser(context)(effect(action));
 
-      const resolve = yield currentEffect.call(model, action.payload);
-      action.__dxjs_resolve?.(resolve);
-      return resolve;
+      // 守卫在最后执行，能过做一些收集、重试等工作
+      yield call(compose(context.guards), { ...context, data, error: null });
     } catch (error) {
-      action.__dxjs_reject?.(error);
+      yield call(compose(context.guards), { ...context, data: null, error });
+      throw error;
     }
   }
 
-  return spawn(function*() {
-    switch (meta.helperType) {
-      case TAKE_EVERY:
-        yield takeEvery(meta.actionType, effectHandler);
-        break;
-      case TAKE_LATEST:
-        yield takeLatest(meta.actionType, effectHandler);
-        break;
-      case TAKE_LEADING:
-        yield takeLeading(meta.actionType, effectHandler);
-        break;
-      case THROTTLE:
-        yield throttle(meta.value[0] ?? 350, meta.actionType, effectHandler);
-        break;
-      default:
-        yield takeEvery(meta.actionType, effectHandler);
-        break;
-    }
-  });
+  return createEffectFork(meta, effect);
 }

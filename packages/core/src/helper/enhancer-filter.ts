@@ -1,6 +1,6 @@
 import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { EnhancerFilter } from '@dxjs/shared/interfaces/dx-enhancer.interface';
-import { LABEL } from '@dxjs/shared/symbol';
+import { LABEL, SymbolType } from '@dxjs/shared/symbol';
 
 function isRegexp(pattern: unknown): pattern is RegExp {
   return pattern instanceof RegExp;
@@ -27,4 +27,12 @@ export function enhancerFilter<T>(Model: DxModelContstructor, enhancers: Enhance
     }
     return false;
   });
+}
+
+export function enhancerFilterWithMethod<T>(
+  ModelConstructor: DxModelContstructor,
+  methodKey: SymbolType,
+  type: SymbolType,
+): T[] {
+  return (Reflect.getMetadata(type, ModelConstructor, methodKey) as T[]) ?? [];
 }

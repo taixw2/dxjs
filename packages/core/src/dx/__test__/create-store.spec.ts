@@ -1,8 +1,8 @@
-import { createEnhancer } from '../create-store/create-enhancer';
 import { combinStore } from '../create-store/create-store';
 import { createStore, applyMiddleware, Action } from 'redux';
 import { promiseMiddleware } from '../create-store/promise-middleware';
 import { store } from '../../helper/store';
+import { createEnhancer } from '../../helper/create-enhancer';
 
 describe('create store', () => {
   //
