@@ -73,7 +73,7 @@
     "hooks": {
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged",
-      "pre-push": "node scripts/release.js"
+      "post-commit": "node scripts/release.js"
     }
   },
   "lint-staged": {
