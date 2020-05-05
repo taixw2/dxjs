@@ -53,6 +53,8 @@ function updateGlobalVersion() {
 }
 
 function run() {
+  const commit = formatCommitMessage();
+  if (commit.type.toLowerCase() !== 'release') return;
   updateGlobalVersion();
   updatePackageVersion();
 
