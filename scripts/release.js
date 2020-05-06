@@ -19,6 +19,8 @@ function formatCommitMessage() {
     .toString('utf8')
     .trim();
 
+  console.log('formatCommitMessage -> commitLog', commitLog);
+
   return sync(commitLog, defaultChangelogOpts);
 }
 
@@ -48,12 +50,13 @@ function updateGlobalVersion() {
   try {
     cp.execSync('git tag v' + version);
   } catch (error) {
-    // 
+    //
   }
 }
 
 function run() {
   const commit = formatCommitMessage();
+  if (!commit || !commit.type) return;
   if (commit.type.toLowerCase() !== 'release') return;
   updateGlobalVersion();
   updatePackageVersion();
