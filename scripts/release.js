@@ -19,8 +19,6 @@ function formatCommitMessage() {
     .toString('utf8')
     .trim();
 
-  console.log('formatCommitMessage -> commitLog', commitLog);
-
   return sync(commitLog, defaultChangelogOpts);
 }
 
@@ -62,7 +60,9 @@ function run() {
   updatePackageVersion();
 
   cp.execSync('npm run clog');
-  cp.execSync('git add package.json CHANGELOG.md && git add packages/**/package.json && git commit --amend --no-edit');
+  cp.execSync('git add package.json CHANGELOG.md');
+  cp.execSync('git add packages/**/package.json');
+  cp.execSync('git commit --amend --no-edit');
 }
 
 run();
