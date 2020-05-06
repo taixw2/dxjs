@@ -11,7 +11,7 @@ import {
 } from '@dxjs/shared/interfaces/dx-effect-support.interface';
 import { AnyAction } from 'redux';
 import { SentinelInterface } from '@dxjs/shared/interfaces/dx-sentinel.interface';
-import { DISGUISER_KEY, SENTINEL_KEY } from '@dxjs/shared/symbol';
+import { DISGUISER_KEY, SENTINEL_KEY, GUARD_KEY } from '@dxjs/shared/symbol';
 import { EnhancerFilter } from '@dxjs/shared/interfaces/dx-enhancer.interface';
 import { DisguiserStatic } from '@dxjs/shared/interfaces/dx-disguiser.interface';
 import { GuardInterface } from '@dxjs/shared/interfaces/dx-guard.interface';
@@ -54,7 +54,7 @@ export function createEffectContext(
     ...enhancerFilter(ModelConstructor, enhancers?.guards as EnhancerFilter<EnhancerSupportInterface<GuardInterface>>[]).map(
       item => item.enhancer,
     ),
-    ...enhancerFilterWithMethod<EnhancerSupportInterface<GuardInterface>>(ModelConstructor, meta.name, DISGUISER_KEY),
+    ...enhancerFilterWithMethod<EnhancerSupportInterface<GuardInterface>>(ModelConstructor, meta.name, GUARD_KEY),
   ]);
 
   const sentinels = enhancerFactory([

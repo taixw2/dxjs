@@ -48,16 +48,21 @@ function updateGlobalVersion() {
   try {
     cp.execSync('git tag v' + version);
   } catch (error) {
-    // 
+    //
   }
 }
 
 function run() {
+  const commit = formatCommitMessage();
+  if (!commit || !commit.type) return;
+  if (commit.type.toLowerCase() !== 'release') return;
   updateGlobalVersion();
   updatePackageVersion();
 
   cp.execSync('npm run clog');
-  cp.execSync('git add package.json CHANGELOG.md && git add packages/**/package.json && git commit --amend --no-edit');
+  cp.execSync('git add package.json CHANGELOG.md');
+  cp.execSync('git add packages/**/package.json');
+  cp.execSync('git commit --amend --no-edit');
 }
 
 run();
