@@ -1,5 +1,7 @@
 ---
 home: true
+heroImage: https://hudson-bucket.oss-cn-shenzhen.aliyuncs.com/localhomeqy/huhulogo/Logo1.png
+heroText: 
 actionText: Get Started →
 actionLink: /guide/
 features:
