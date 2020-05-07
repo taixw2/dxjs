@@ -7,9 +7,11 @@ import { BaseEffectContextInterface } from '@dxjs/shared/interfaces/dx-effect-co
 import { mix } from '../helper/mixins';
 import { BaseEffect } from './base-effect';
 
-export class Disguiser<T extends AnyAction = any>
-  extends (mix(DxBase, BaseEffect) as { new (context: BaseEffectContextInterface<any>): DxBase & BaseEffect })
-  implements DisguiserBaseInterface<T> {
+const Support = (mix(DxBase, BaseEffect) as unknown) as {
+  new (context: BaseEffectContextInterface<any>): DxBase & BaseEffect;
+};
+
+export class Disguiser<T extends AnyAction = any> extends Support implements DisguiserBaseInterface<T> {
   constructor(context: BaseEffectContextInterface<T>) {
     super(context);
   }
