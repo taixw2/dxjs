@@ -17,7 +17,7 @@ export interface DxFactoryInterface {
     (match: RegExp): DxModelContstructor[];
     (match: string): DxModelContstructor;
   };
-  collect: (name?: string) => (ModelTarget: DxModelContstructor) => DxModelContstructor;
+  collect: (name?: string) => <T extends DxModelContstructor>(ModelTarget: T) => T;
   inst?: symbol;
 }
 
