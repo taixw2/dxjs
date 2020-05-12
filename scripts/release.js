@@ -12,24 +12,18 @@ const defaultChangelogOpts = require('conventional-changelog-angular');
 const cp = require('child_process');
 
 const CWD = process.cwd();
-
-function formatCommitMessage() {
-  const commitLog = cp
-    .execSync('git log -n 1 --pretty=format:"%B"')
-    .toString('utf8')
-    .trim();
-
-  return sync(commitLog, defaultChangelogOpts);
-}
+const RELEASE_TYPE = ['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease'];
 
 function updateVersion(pkgPath) {
   if (!fs.existsSync(pkgPath)) return;
-  const commit = formatCommitMessage();
-  if (commit.type.toLowerCase() !== 'release') return;
+
+  const releaseType = [...process.argv].pop();
+  if (!RELEASE_TYPE.includes(releaseType)) return;
 
   const packageJSON = JSON.parse(fs.readFileSync(pkgPath).toString('utf8'));
   const currentVersion = packageJSON.version;
-  const nextVersion = semver.inc(currentVersion, commit.scope || 'patch');
+
+  const nextVersion = semver.inc(currentVersion, releaseType);
   fs.writeFileSync(pkgPath, JSON.stringify({ ...packageJSON, version: nextVersion }, null, 2));
 
   return nextVersion;
@@ -50,19 +44,17 @@ function updateGlobalVersion() {
   } catch (error) {
     //
   }
+  return version;
 }
 
 function run() {
-  const commit = formatCommitMessage();
-  if (!commit || !commit.type) return;
-  if (commit.type.toLowerCase() !== 'release') return;
-  updateGlobalVersion();
+  const version = updateGlobalVersion();
   updatePackageVersion();
 
   cp.execSync('npm run clog');
   cp.execSync('git add package.json CHANGELOG.md');
   cp.execSync('git add packages/**/package.json');
-  cp.execSync('git commit --amend --no-edit');
+  cp.execSync(`git commit -m "feat(release): release v${version}"`);
 }
 
 run();
