@@ -1,3 +1,6 @@
+import 'reflect-metadata';
+import 'es6-symbol';
+
 import { DxFactory, DxFactoryInterface } from './dx';
 import { connect } from 'react-redux';
 

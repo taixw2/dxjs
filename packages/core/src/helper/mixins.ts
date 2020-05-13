@@ -4,7 +4,7 @@
 
 import { SymbolType } from '@dxjs/shared/symbol';
 
-export function mix(...mixins: any[]) {
+export function mix(...mixins: any[]): any {
   function copyProps(target: any, source: any): void {
     ([] as SymbolType[])
       .concat(Object.getOwnPropertyNames(source))
@@ -14,7 +14,7 @@ export function mix(...mixins: any[]) {
       });
   }
 
-  class Mix {
+  class MixClass {
     constructor(...args: any[]) {
       mixins.forEach(Mixin => {
         copyProps(this, new Mixin(...args));
@@ -23,8 +23,8 @@ export function mix(...mixins: any[]) {
   }
 
   for (const Mixin of mixins) {
-    copyProps(Mix, Mixin);
-    copyProps(Mix.prototype, Mixin.prototype);
+    copyProps(MixClass, Mixin);
+    copyProps(MixClass.prototype, Mixin.prototype);
   }
-  return Mix;
+  return MixClass;
 }

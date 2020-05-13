@@ -1,6 +1,6 @@
 {
   "name": "@dxjs/core",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Unified management of your application status, use enhancer to deal with other tedious things",
   "keywords": [
     "dxjs",
@@ -43,17 +43,18 @@
     "@types/koa-compose": "^3.2.5",
     "@types/react": "^16.9.29",
     "@types/react-redux": "^7.1.7",
-    "react-dom": "^16.13.1",
-    "react-redux": "^7.2.0",
-    "reflect-metadata": "^0.1.13"
+    "react-dom": "^16.13.1"
   },
   "dependencies": {
     "@dxjs/common": "^1.0.1",
     "@dxjs/shared": "^1.0.0",
+    "es6-symbol": "^3.1.3",
     "invariant": "^2.2.4",
     "koa-compose": "^4.1.0",
+    "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-saga": "^1.1.3"
+    "redux-saga": "^1.1.3",
+    "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
     "es6-symbol": "*",
