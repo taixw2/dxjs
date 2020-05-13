@@ -10,8 +10,6 @@
 
 Dxjs 是一个 基于 redux-saga 和 typescript 的状态管理库，它在 redux-saga 的基础上新增了一些钩子，让你能够在数据流的任意阶段插入逻辑，
 
-> 如果你对 redux-saga 和 typescript 不太熟悉，建议花一些时间先补一下课。 
-
 ![](./docs/images/saga-process.jpg)
 
 ### 基础特性
@@ -23,25 +21,16 @@ Dxjs 是一个 基于 redux-saga 和 typescript 的状态管理库，它在 redu
 
 ### 安装
 
-1. 你需要确保环境中支持 Reflect.metadata、Symbol, 建议引入 `reflect-metadata`
-2. 引入最基础的三件套，`react`、`react-dom`、`react-redux`, 如果你采用的是 taro 等环境，则需要设置这三个的别名
-3. 引入 dxjs 
-
 ```sh
-1. npm install reflect-metadata es6-symbol # 也可以用其它库代替
-2. npm install react react-dom react-redux # 如果采用的是 taro 或 react-native 则不用安装 react-dom 或者 react-redux，但是需要特殊处理, 见下方
-3. npm install @dxjs/core @dxjs/common
+npm install react-redux @dxjs/core @dxjs/common
 
 # 采用 yarn
-1. yarn add reflect-metadata es6-symbol
-2. yarn add react react-dom react-redux
-3. yarn add @dxjs/core @dxjs/common
+yarn add react-redux @dxjs/core @dxjs/common
 ```
 
 ### 在 taro 中安装依赖
 
 ```sh
-# 代替上面第二部步
 npm install @tarojs/redux @tarojs/redux-h5
 
 # 在 config/index.js 中设置
@@ -50,6 +39,39 @@ alias: {
   "react-dom": require.resolve("@tarojs/taro"),
   "react-redux": require.resolve("@tarojs/redux"),
 }
+```
+
+### DxModel
+
+```typescript
+
+export class ExampleModel extends DxModel {
+  state = { count: 1 };
+
+  @Reducer('ns/count')
+  coustActionReducer(count: number): void {
+    this.state.count += count;
+  }
+
+  @Reducer()
+  updateCount(count: number): void {
+    this.state.count += count;
+  }
+
+  @Effect('ns/asyncCount')
+  *asyncUpdateCount(payload: number): Generator {
+    const count = yield this.$call(delayGet, payload);
+    yield this.$put((ExampleModel as DxModelContstructor).updateCount(count));
+  }
+
+  @Effect()
+  *delayUpdate(payload: number): Generator {
+    const count = yield this.$delay(1000, payload);
+    yield this.$put((ExampleModel as DxModelContstructor).updateCount(count));
+    return (count as number) + 10;
+  }
+}
+
 ```
 
 ### 快速开始
