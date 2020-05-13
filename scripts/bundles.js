@@ -7,8 +7,11 @@ exports.packages = [
       { entry: 'react-dom', global: 'ReactDom' },
       { entry: 'redux', global: 'redux' },
       { entry: 'react-redux', global: 'reactRedux' },
+      { entry: 'redux-saga', global: 'reduxSaga' },
+      { entry: 'redux-saga/effects', global: 'reduxSagaEffect' },
       { entry: '@dxjs/common', global: 'DxCommon' },
       { entry: 'reflect-metadata', global: '' },
+      { entry: 'es6-symbol', global: '' },
     ],
   },
   {
@@ -17,8 +20,11 @@ exports.packages = [
     externals: [
       { entry: 'react', global: 'React' },
       { entry: 'react-dom', global: 'ReactDom' },
+      { entry: 'redux-saga', global: 'reduxSaga' },
+      { entry: 'redux-saga/effects', global: 'reduxSagaEffect' },
       { entry: 'react-redux', global: 'ReactRedux' },
       { entry: 'reflect-metadata', global: '' },
+      { entry: 'es6-symbol', global: '' },
     ],
   },
 ];
