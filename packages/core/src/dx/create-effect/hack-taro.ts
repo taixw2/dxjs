@@ -1,4 +1,4 @@
-import * as DxCommon from '@dxjs/common';
+import { default as DxCommon } from '@dxjs/common';
 import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import { isGenerator } from './is-generator';
 

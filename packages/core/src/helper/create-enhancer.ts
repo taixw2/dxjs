@@ -17,7 +17,7 @@ export function createEnhancer<T>(enhancers?: Enhancer<T>[]): EnhancerFilter<T>[
     }
     if (__DEV__) {
       invariant(
-        Reflect.has(enhancer, 'enhancer'),
+        Reflect.has(enhancer as object, 'enhancer'),
         '第 %s 个增强器必须包含 enhancer 属性, 当前类型为：%s',
         i,
         typeof enhancer,
