@@ -11,6 +11,11 @@ import { promiseMiddleware } from './promise-middleware';
 import { createAction } from '../create-action';
 import { resolve } from '../../utils';
 
+// @https://github.com/rollup/rollup/issues/2554
+// rollup 打包的时候会直接通过 require('redux-saga'),
+// 并不会像 typescript 使用 _importDefault 类似的垫片
+// const createSagaMiddleware = Reflect.get(saga as object, 'default') as typeof saga;
+
 const nonp = (): void => undefined;
 
 const createSagaMiddleware = resolve.getExportFromNamespace(reduxSaga);
