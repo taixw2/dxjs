@@ -8,13 +8,14 @@ const fs = require('fs');
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
 const resolve = require('rollup-plugin-node-resolve');
+// const resolve = require('rollup-plugin-node-resolve');
+const rollupTypescript = require('rollup-plugin-typescript2');
 const terser = require('rollup-plugin-terser').terser;
 const replace = require('rollup-plugin-replace');
 const gzip = require('gzip-size');
 const babelCore = require('@babel/core');
-const react = require('react');
-const reactDom = require('react-dom');
 const bundles = require('./bundles');
+
 
 function getPackgeFileName(packageName, bundleType) {
   switch (bundleType) {
@@ -87,6 +88,7 @@ async function createBundle(package, bundleType) {
   process.env.NODE_ENV = getNodeEnv(bundleType);
   const isProduction = process.env.NODE_ENV === 'production';
 
+
   try {
     const entryFile = require.resolve(entry);
     const bundle = await rollup.rollup({
@@ -97,15 +99,11 @@ async function createBundle(package, bundleType) {
           __DEV__: !isProduction,
           __ISSUE__: 'https://github.com/taixw2/dxjs/issues',
         }),
+        commonjs(),
         resolve({
           extensions: ['.js', '.ts'],
         }),
-        commonjs({
-          namedExports: {
-            react: Object.keys(react),
-            'react-dom': Object.keys(reactDom),
-          },
-        }),
+        rollupTypescript(),
         babel({
           configFile: path.resolve('.babelrc'),
           exclude: 'node_modules/**',
@@ -118,6 +116,7 @@ async function createBundle(package, bundleType) {
 
     await bundle.write({
       // output option
+      preferConst: true,
       file: getOutoutPath(packageName, bundleType, packageFileName),
       format: getFormat(bundleType),
       globals: combinGlobalModule(externals),
@@ -177,8 +176,8 @@ async function build() {
 
   for (let index = 0; index < bundles.packages.length; index++) {
     const package = bundles.packages[index];
-    await createBundle(package, bundles.UMD);
-    await createBundle(package, bundles.UMD_DEV);
+    // await createBundle(package, bundles.UMD);
+    // await createBundle(package, bundles.UMD_DEV);
     await createBundle(package, bundles.CJS);
     await createBundle(package, bundles.CJS_DEV);
   }
