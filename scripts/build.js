@@ -89,6 +89,7 @@ async function createBundle(package, bundleType) {
   process.env.NODE_ENV = getNodeEnv(bundleType);
   const isProduction = process.env.NODE_ENV === 'production';
 
+
   try {
     const entryFile = require.resolve(entry);
     const bundle = await rollup.rollup({
