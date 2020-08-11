@@ -1,5 +1,4 @@
 import * as React from 'react';
-console.log('React', React.version);
 import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { Provider } from 'react-redux';
 import { createStoreFactory } from '../create-store';

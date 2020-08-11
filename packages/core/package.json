@@ -16,7 +16,6 @@
   "homepage": "https://github.com/taixw2/dx#readme",
   "license": "MIT",
   "main": "index.js",
-  "types": "src/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
@@ -27,6 +26,7 @@
   "bugs": {
     "url": "https://github.com/taixw2/dx/issues"
   },
+  "types": "./src/index.ts",
   "files": [
     "LICENSE",
     "README.md",

@@ -16,7 +16,7 @@
   "homepage": "https://github.com/taixw2/dx#readme",
   "license": "MIT",
   "main": "index.js",
-  "types": "src/index.d.ts",
+  "types": "./src/index.ts",
   "publishConfig": {
     "access": "public"
   },

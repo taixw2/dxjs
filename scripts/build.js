@@ -16,6 +16,7 @@ const gzip = require('gzip-size');
 const babelCore = require('@babel/core');
 const bundles = require('./bundles');
 
+const cwd = process.cwd();
 
 function getPackgeFileName(packageName, bundleType) {
   switch (bundleType) {
@@ -88,7 +89,6 @@ async function createBundle(package, bundleType) {
   process.env.NODE_ENV = getNodeEnv(bundleType);
   const isProduction = process.env.NODE_ENV === 'production';
 
-
   try {
     const entryFile = require.resolve(entry);
     const bundle = await rollup.rollup({
@@ -120,7 +120,7 @@ async function createBundle(package, bundleType) {
       file: getOutoutPath(packageName, bundleType, packageFileName),
       format: getFormat(bundleType),
       globals: combinGlobalModule(externals),
-      exports: "auto",
+      exports: 'auto',
       freeze: false,
       name: globalName,
       interop: false,
@@ -147,9 +147,9 @@ async function copyTo(from, to) {
  * 将未参与打包的资源复制到输出目录中
  */
 function copyResource() {
-  const tasks = fs.readdirSync('packages').map(async name => {
-    const fromBaseDir = path.join('packages', name);
-    const toBaseDir = path.join('build', name);
+  const tasks = fs.readdirSync(path.join(cwd, 'packages')).map(async name => {
+    const fromBaseDir = path.join(cwd, 'packages', name);
+    const toBaseDir = path.join(cwd, 'build', name);
     if (!fs.existsSync(toBaseDir)) {
       // 直接复制整个目录到 build
       await mkdirp(toBaseDir);
@@ -160,8 +160,12 @@ function copyResource() {
 
     await copyTo(path.join(fromBaseDir, 'npm'), path.join(toBaseDir));
     await copyTo('LICENSE', path.join(toBaseDir, 'LICENSE'));
-    await copyTo(path.join(fromBaseDir, 'package.json'), path.join(toBaseDir, 'package.json'));
+    // await copyTo(path.join(fromBaseDir, 'package.json'), path.join(toBaseDir, 'package.json'));
     await copyTo('README.md', path.join(toBaseDir, 'README.md'));
+    const pkg = require(path.join(fromBaseDir, 'package.json'));
+    pkg.types = 'src/index.d.ts';
+
+    await fs.promises.writeFile(path.join(toBaseDir, 'package.json'), JSON.stringify(pkg), 'utf-8');
   });
 
   return Promise.all(tasks);
@@ -176,8 +180,6 @@ async function build() {
 
   for (let index = 0; index < bundles.packages.length; index++) {
     const package = bundles.packages[index];
-    // await createBundle(package, bundles.UMD);
-    // await createBundle(package, bundles.UMD_DEV);
     await createBundle(package, bundles.CJS);
     await createBundle(package, bundles.CJS_DEV);
   }
@@ -185,4 +187,6 @@ async function build() {
   await copyResource();
 }
 
-build();
+build().catch(error => {
+  console.error('build fail', error);
+});
