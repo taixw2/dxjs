@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TAKE_EVERY, EFFECT_METHODS_META, SymbolType, EFFECT_HELPERS, EFFECT_METHODS_KEY } from '@dxjs/shared/symbol';
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
+/*
+ * @Author: 欧阳鑫
+ * @Date: 2020-08-10 19:21:08
+ * @Last Modified by: 欧阳鑫
+ * @Last Modified time: 2020-08-11 16:21:28
+ */
+
+import { mark } from '../mark';
+import { EFFECT_METHODS_KEY, EFFECT_METHODS_META, EFFECT_HELPERS, TAKE_EVERY, SymbolType } from '@dxjs/shared/symbol';
 
 export function Effect(actionTypeArg?: SymbolType, helperTypeArg?: any, ...args: any[]): MethodDecorator {
   return (target: any, key: SymbolType, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> => {
@@ -21,19 +28,11 @@ export function Effect(actionTypeArg?: SymbolType, helperTypeArg?: any, ...args:
       [_actionType, _helperType] = [_defaultActionType, actionTypeArg!];
     }
 
-    const effectKeys: Set<SymbolType> = Reflect.getMetadata(EFFECT_METHODS_KEY, target.constructor) ?? new Set();
-    if (effectKeys.has(key)) return descriptor;
+    mark(EFFECT_METHODS_KEY, key)(target.constructor);
+    mark(EFFECT_METHODS_META, { name: key, value: args, helperType: _helperType, actionType: _actionType })(
+      target.constructor,
+    );
 
-    const effectMetas: Set<EffectTypeInterface> = Reflect.getMetadata(EFFECT_METHODS_META, target.constructor) ?? new Set();
-    effectMetas.add({
-      name: key,
-      value: args,
-      helperType: _helperType,
-      actionType: _actionType,
-    });
-    effectKeys.add(key);
-    Reflect.defineMetadata(EFFECT_METHODS_KEY, effectKeys, target.constructor);
-    Reflect.defineMetadata(EFFECT_METHODS_META, effectMetas, target.constructor);
-    return descriptor;
+    return descriptor ?? target;
   };
 }

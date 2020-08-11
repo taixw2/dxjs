@@ -1,6 +1,7 @@
-export { Label } from './helper/label';
-export { Effect } from './helper/effect';
-export { Reducer } from './helper/reducer';
+export { Label } from './expand/label';
+export { Effect } from './expand/effect';
+export { Reducer } from './expand/reducer';
+export { mark as Mark } from './mark';
 
 import { TAKE_EVERY, TAKE_LEADING, TAKE_LATEST, THROTTLE } from '@dxjs/shared/symbol';
 
