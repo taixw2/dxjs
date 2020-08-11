@@ -71,6 +71,11 @@ function getPackageName(package) {
   return package.split('/')[1];
 }
 
+/**
+ * rollup build
+ * @param {*} package 包
+ * @param {*} bundleType  打包类型
+ */
 async function createBundle(package, bundleType) {
   // 获取文件名称
   const { entry, global: globalName, externals } = package;
@@ -116,6 +121,7 @@ async function createBundle(package, bundleType) {
       file: getOutoutPath(packageName, bundleType, packageFileName),
       format: getFormat(bundleType),
       globals: combinGlobalModule(externals),
+      exports: "auto",
       freeze: false,
       name: globalName,
       interop: false,
@@ -138,6 +144,9 @@ async function copyTo(from, to) {
   });
 }
 
+/**
+ * 将未参与打包的资源复制到输出目录中
+ */
 function copyResource() {
   const tasks = fs.readdirSync('packages').map(async name => {
     const fromBaseDir = path.join('packages', name);
@@ -159,6 +168,10 @@ function copyResource() {
   return Promise.all(tasks);
 }
 
+/**
+ * 开始 Build
+ * 打包 cjs + umd 模块
+ */
 async function build() {
   await rmfr('build');
 
