@@ -5,23 +5,26 @@ import { createReducer } from '../create-reducer';
 import { createEffect } from '../create-effect';
 import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import reduxSaga from 'redux-saga';
 import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { promiseMiddleware } from './promise-middleware';
 import { createAction } from '../create-action';
+import { resolve } from '../../utils';
 
 const nonp = (): void => undefined;
+
+const createSagaMiddleware = resolve.getExportFromNamespace(reduxSaga);
 
 /**
  * 重组 effect 和 reducer
  */
-function recombinEffectAndReducer(inst: symbol, dispatch: Dispatch): [{ [key: string]: Reducer }, ForkEffect[]] {
+function recombinEffectAndReducer(dispatch: Dispatch): [{ [key: string]: Reducer }, ForkEffect[]] {
   const reducers: { [key: string]: Reducer } = {};
   const effects: ForkEffect[] = [];
-  store.getModels(inst).set.forEach(ModelConstructor => {
+  store.getModels().set.forEach(ModelConstructor => {
     const model = new ModelConstructor(dispatch);
-    const modelReducer = createReducer(inst, model);
-    const modelEffect = createEffect(inst, model);
+    const modelReducer = createReducer(model);
+    const modelEffect = createEffect(model);
 
     const modelName = Reflect.getMetadata(MODEL_NAME, ModelConstructor);
     if (modelReducer) {
@@ -36,26 +39,26 @@ function recombinEffectAndReducer(inst: symbol, dispatch: Dispatch): [{ [key: st
 }
 
 /**
+ * 调用 redux 的 create store
  * 生成 redux store
  */
-export function combinStore(inst: symbol, options: CreateOption): Store {
+export function combinStore(options: CreateOption): Store {
   const optionsMiddlewares = options.middlewares ?? [];
   const sagaMiddleware = createSagaMiddleware({
-    onError: () => undefined,
+    onError: options.onSagaError,
     effectMiddlewares: options.sagaMiddlewares,
   });
 
-  const middlewares = [promiseMiddleware(inst), sagaMiddleware, ...optionsMiddlewares];
+  const middlewares = [promiseMiddleware(), sagaMiddleware, ...optionsMiddlewares];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const istore = createStore<any, AnyAction, {}, {}>(nonp, applyMiddleware(...middlewares));
-  const [reducers, effects] = recombinEffectAndReducer(inst, istore.dispatch);
-  istore.replaceReducer(combineReducers({ __dxjs: () => '__dxjs', ...reducers }));
+  const store = createStore<any, AnyAction, {}, {}>(nonp, applyMiddleware(...middlewares));
+  const [reducers, effects] = recombinEffectAndReducer(store.dispatch);
+  store.replaceReducer(combineReducers({ __dxjs: () => '__dxjs', ...reducers }));
   sagaMiddleware.run(function*() {
     yield all(effects);
   });
 
-  createAction(inst, istore.dispatch);
-  store.reduxStore.set(inst, istore);
-  return istore;
+  createAction(store.dispatch);
+  return store;
 }

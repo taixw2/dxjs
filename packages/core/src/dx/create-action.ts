@@ -5,30 +5,31 @@ import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.inte
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react';
 
-export function createAction(inst: symbol, dispatch: Dispatch<AnyAction>): void {
-  const models = store.getModels(inst);
+export function createAction(dispatch: Dispatch<AnyAction>): void {
+  const models = store.getModels();
   models.set.forEach(Model => {
-    const reducers = Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as Map<symbol, string>;
-    const effects = Reflect.getMetadata(EFFECT_METHODS_META, Model) as Set<EffectTypeInterface>;
+    const reducers = Reflect.getMetadata(REDUCER_METHODS_KEY, Model) as [symbol, string][];
+    const effects = Reflect.getMetadata(EFFECT_METHODS_META, Model) as EffectTypeInterface[];
 
-    if (reducers && reducers.size) {
-      reducers.forEach((methodName, actionType) => {
+    const reducersMap = new Map(reducers);
+    if (reducersMap && reducersMap.size) {
+      reducersMap.forEach((methodName, actionType) => {
         Reflect.set(Model, methodName, function action(payload: any, autoDispatch?: boolean): AnyAction | void {
-          if (autoDispatch) {
-            return dispatch({ type: actionType, payload });
+          if (autoDispatch === false) {
+            return { type: actionType, payload };
           }
-          return { type: actionType, payload };
+          return dispatch({ type: actionType, payload });
         });
       });
     }
 
-    if (effects && effects.size) {
+    if (effects && effects.length) {
       effects.forEach(({ name, actionType }) => {
         Reflect.set(Model, name, function action(payload: any, autoDispatch?: boolean): AnyAction | void {
-          if (autoDispatch) {
-            return dispatch({ type: actionType, payload });
+          if (autoDispatch === false) {
+            return { type: actionType, payload };
           }
-          return { type: actionType, payload };
+          return dispatch({ type: actionType, payload });
         });
       });
     }

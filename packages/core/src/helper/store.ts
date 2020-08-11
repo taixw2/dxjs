@@ -1,5 +1,5 @@
-import { DxEnhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
 import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
+import { Hook } from '@dxjs/shared/interfaces/dx-plugin.interface';
 import { Store } from 'redux';
 import { SymbolType } from '@dxjs/shared/symbol';
 
@@ -8,26 +8,59 @@ interface ModelRefs {
   map: { [key: string]: DxModelContstructor };
 }
 
-interface StoreActionType {
-  // 用于记录生成的 action type
-  reducers: Set<SymbolType>;
-  effects: Set<SymbolType>;
+// TODO: 多实例待测试
+let dxInstance: SymbolType = '';
+
+export function changeDxInstance(instance: SymbolType): void {
+  dxInstance = instance;
 }
 
+const plugins = new Map<SymbolType, Map<Hook, unknown[]>>();
+const models = new Map<SymbolType, ModelRefs>();
+const reduxStore = new Map<SymbolType, Store>();
+const effectTypes = new Map<SymbolType, Set<SymbolType>>();
+
 export const store = {
-  enhancer: new Map<symbol, DxEnhancer>(),
-  models: new Map<symbol, ModelRefs>(),
-  reduxStore: new Map<symbol, Store>(),
+  set plugins(value: Map<Hook, unknown[]>) {
+    plugins.set(dxInstance, value);
+  },
 
-  // 用来记录 action, 以方便判断 action 是否 effect
-  actionTypes: new Map<symbol, StoreActionType>(),
+  get plugins(): Map<Hook, unknown[]> {
+    return plugins.get(dxInstance) ?? new Map();
+  },
 
-  getModels(inst: symbol): ModelRefs {
-    let models = store.models.get(inst);
-    if (!models) {
-      models = { set: new Set(), map: {} };
-      store.models.set(inst, models);
+  set models(value: ModelRefs) {
+    models.set(dxInstance, value);
+  },
+
+  get models(): ModelRefs {
+    return models.get(dxInstance)!;
+  },
+
+  set reduxStore(value: Store) {
+    reduxStore.set(dxInstance, value);
+  },
+
+  get reduxStore(): Store {
+    return reduxStore.get(dxInstance)!;
+  },
+
+  set effectTypes(value: Set<SymbolType>) {
+    effectTypes.set(dxInstance, value);
+  },
+
+  get effectTypes(): Set<SymbolType> {
+    return effectTypes.get(dxInstance)!;
+  },
+
+  getModels(): ModelRefs {
+    if (!store.models) {
+      store.models = { set: new Set(), map: {} };
     }
-    return models;
+    return store.models;
   },
 };
+
+// 流程演示
+// 1. 实例化 store, 所有的都被保存在对应的 instance 中
+// 2. dispatch 找到对应的 plugins

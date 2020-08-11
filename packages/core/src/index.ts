@@ -1,12 +1,10 @@
 import 'reflect-metadata';
 import 'es6-symbol';
 
-import { DxFactory, DxFactoryInterface } from './dx';
-import { connect } from 'react-redux';
+import * as DxAction from '@dxjs/shared/interfaces/dx-action.interface';
 
 export { DxModel } from './dx-model/model';
-export { Disguiser } from './dx-model/disguiser';
-export { Guard } from './dx-model/guard';
-export { Sentinel } from './dx-model/sentinel';
-export { DxFactory, connect };
-export const Dx: DxFactoryInterface = DxFactory();
+export { DxFactory, Dx } from './dx';
+export { connect, useDispatch, useSelector, useStore, shallowEqual, batch, Provider } from 'react-redux';
+
+export type Dispatch = DxAction.Dispatch;

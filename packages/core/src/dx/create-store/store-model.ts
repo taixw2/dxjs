@@ -10,8 +10,8 @@ const invariant = require('invariant');
  * @param inst
  * @param options
  */
-export function storeModel(inst: symbol, options: CreateOption): void {
-  const models = store.getModels(inst);
+export function storeModel(options: CreateOption): void {
+  const models = store.getModels();
 
   /**
    * 将 Modal 的构造类存起来
