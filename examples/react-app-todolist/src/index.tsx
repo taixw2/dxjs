@@ -5,11 +5,14 @@ import { render, version } from 'react-dom';
 import { Dx } from '@dxjs/core';
 import Main from './pages/main';
 import './dx/todolist.model';
+import immer from './dx-plugins/immer';
 
 const root = document.createElement('div');
 document.body.appendChild(root);
 
-const DxApp = Dx.create();
+const DxApp = Dx.create({
+  plugins: [immer],
+});
 
 render(
   <React.StrictMode>

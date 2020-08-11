@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 /**
  * @type {import('webpack').Configuration}
@@ -55,6 +56,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'REACT APP TODOLIST',
+    }),
+    new webpack.DefinePlugin({
+      __DEV__: 'true',
     }),
   ],
 };
