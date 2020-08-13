@@ -4,12 +4,13 @@ function effectHook<T>(context: T, iterator: Generator): Generator {
   const hook =
     (store.plugins.get('effect') as (<T>(
       context: T,
-      ref: { next: () => Generator; abort: (value: unknown) => void; throw: (value: unknown) => void },
+      ref: { next: () => Generator; abort: (value: unknown) => void; throw: (value: unknown) => void; isDone: () => void },
     ) => Generator)[]) ?? [];
 
   // 在 effect 上加一层包装
   return hook.reduce((effect, currentHook) => {
-    let prevalue: unknown = undefined;
+    let effectRef: unknown = undefined;
+    let effectValue: unknown = undefined;
 
     function $throw(value: unknown): void {
       effect.throw(value);
@@ -20,11 +21,17 @@ function effectHook<T>(context: T, iterator: Generator): Generator {
     }
 
     function* next(): Generator {
-      prevalue = yield effect.next(prevalue).value;
-      return prevalue;
+      effectRef = effect.next(effectValue);
+      effectValue = yield (effectRef as IteratorResult<any>).value;
+      return effectValue;
     }
 
-    const hookIterator = currentHook(context, { next, abort, throw: $throw });
+    function isDone(): boolean {
+      if (!effectRef) return false;
+      return (effectRef as IteratorResult<any>).done ?? true;
+    }
+
+    const hookIterator = currentHook(context, { next, abort, throw: $throw, isDone });
 
     function* run(args?: unknown): Generator {
       const result = hookIterator.next(args);
