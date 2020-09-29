@@ -6,7 +6,7 @@ import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface
 import { Store, Action } from 'redux';
 import * as React from 'react';
 import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
-import { changeDxInstance } from '../helper/store';
+import { changeDxInstance, store } from '../helper/store';
 
 export interface DxFactoryInterface {
   createStore: <T>(options?: CreateOption<T>) => Store<{}, Action>;
@@ -25,7 +25,11 @@ export interface DxFactoryInterface {
 export function DxFactory(): DxFactoryInterface {
   const inst = Symbol('__dx');
 
+  // init
   changeDxInstance(inst);
+  if (store.plugins.size === 0) {
+    store.plugins = new Map();
+  }
 
   return {
     createStore: createStoreFactory(),
