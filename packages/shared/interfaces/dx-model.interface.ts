@@ -5,6 +5,8 @@ import { Reducer, Action } from 'redux';
 export interface DxModelInterface<T = any> extends DxBaseInterface {
   state: T;
 
+  init?(): void;
+
   [key: string]: Reducer | any;
 }
 
