@@ -2,7 +2,7 @@ interface IsGeneratorExtend extends Function {
   isGenerator(): boolean;
 }
 
-export function isClassPlugin(fn: unknown): boolean {
+export function isClass<T>(fn: unknown): fn is T {
   return typeof fn === 'function' && !!fn.toString().match(/^class/);
 }
 

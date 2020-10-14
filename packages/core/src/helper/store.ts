@@ -1,7 +1,7 @@
 import { Store } from 'redux';
 import { SymbolType } from '@dxjs/shared/symbol';
 import { DxModelContstructor } from '../dx-model/model';
-import { Hook } from '../dx/plugins/context';
+import { Hook } from '../dx/create-plugin';
 
 interface ModelRefs {
   set: Set<DxModelContstructor>;

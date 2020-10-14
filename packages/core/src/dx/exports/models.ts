@@ -10,6 +10,7 @@ export function modelsFactory() {
   function getModels(): { [key: string]: DxModelContstructor };
   function getModels(match: RegExp): DxModelContstructor[];
   function getModels(match: string): DxModelContstructor;
+
   function getModels(match?: string | RegExp): GetModels {
     const map = store.getModels()?.map || {};
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -21,7 +22,6 @@ export function modelsFactory() {
         '请传入有效的参数，当前参数类型为 %s, 但只接受 string、undefined、regexp 的类型',
         typeof match,
       );
-
       require('invariant')(store.reduxStore, 'store 还没有创建，请先调用 Dx.createStore 或 Dx.create 创建 store');
     }
 
@@ -33,6 +33,7 @@ export function modelsFactory() {
       if (Reflect.has(map, match)) return Reflect.get(map, match);
       return [...set].find(model => getModelName(model).startsWith(match));
     }
+
     return [...set].filter(model => match.test(getModelName(model)));
   }
   return getModels;
