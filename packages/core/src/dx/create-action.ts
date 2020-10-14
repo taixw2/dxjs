@@ -9,6 +9,8 @@ interface Effect {
   actionType: string;
 }
 
+export type DxActionCreate<T = any> = (payload?: T) => void;
+
 export function createAction(dispatch: Dispatch<AnyAction>): void {
   const models = store.getModels();
   models.set.forEach(Model => {

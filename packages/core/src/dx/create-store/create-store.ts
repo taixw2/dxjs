@@ -1,5 +1,5 @@
 import { store } from '../../helper/store';
-import { Reducer, Dispatch, AnyAction, Store } from 'redux';
+import { Reducer, AnyAction, Store } from 'redux';
 import { ForkEffect, spawn, all } from 'redux-saga/effects';
 import { createReducer } from '../create-reducer';
 import { createEffect } from '../create-effect';
@@ -19,12 +19,12 @@ const createSagaMiddleware = resolve.getExportFromNamespace(reduxSaga);
 /**
  * 重组 effect 和 reducer
  */
-function recombinEffectAndReducer(dispatch: Dispatch): [{ [key: string]: Reducer }, ForkEffect[], DxModel[]] {
+function recombinEffectAndReducer(): [{ [key: string]: Reducer }, ForkEffect[], DxModel[]] {
   const reducers: { [key: string]: Reducer } = {};
   const effects: ForkEffect[] = [];
   const models: DxModel[] = [];
   store.getModels().set.forEach(ModelConstructor => {
-    const model = new ModelConstructor(dispatch);
+    const model = new ModelConstructor();
     const modelReducer = createReducer(model);
     const modelEffect = createEffect(model);
 
@@ -57,8 +57,10 @@ export function combinStore(options: CreateOption): Store {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const store = createStore<any, AnyAction, {}, {}>(nonp, applyMiddleware(...middlewares));
-  const [reducers, effects, models] = recombinEffectAndReducer(store.dispatch);
+  const [reducers, effects, models] = recombinEffectAndReducer();
+
   store.replaceReducer(combineReducers({ __dxjs: () => '__dxjs', ...reducers }));
+
   sagaMiddleware.run(function*() {
     yield all(effects);
   });
