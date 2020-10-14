@@ -9,11 +9,11 @@
 
 import { store } from '../../../helper/store';
 import { AnyAction } from 'redux';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { DxModel } from '../../../dx-model/model';
 
 type afterReducerHookType = <T>(context: T) => T;
 
-export function afterReducerHook<T>(state: T, action: AnyAction, model: DxModelInterface): void {
+export function afterReducerHook<T>(state: T, action: AnyAction, model: DxModel): void {
   const afterReducerHooks = store.plugins.get('afterReducer') as afterReducerHookType[];
   if (!afterReducerHooks || !afterReducerHooks.length) return;
   const context = { state, action, model };

@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AnyAction } from 'redux';
-import { BaseEffectContextInterface } from '@dxjs/shared/interfaces/dx-effect-context.interface';
 
 export class BaseEffect<T extends AnyAction = any> {
-  constructor(private context: BaseEffectContextInterface<T>) {}
+  constructor(private context: any) {}
 
   getState(): any {
     return this.context.getState();

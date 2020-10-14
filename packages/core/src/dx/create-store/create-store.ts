@@ -6,11 +6,11 @@ import { createEffect } from '../create-effect';
 import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import reduxSaga from 'redux-saga';
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { promiseMiddleware } from './promise-middleware';
 import { createAction } from '../create-action';
 import { resolve } from '../../utils';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { DxModel } from '../../dx-model/model';
+import { CreateOption } from '../exports/create';
 
 const nonp = (): void => undefined;
 
@@ -19,10 +19,10 @@ const createSagaMiddleware = resolve.getExportFromNamespace(reduxSaga);
 /**
  * 重组 effect 和 reducer
  */
-function recombinEffectAndReducer(dispatch: Dispatch): [{ [key: string]: Reducer }, ForkEffect[], DxModelInterface[]] {
+function recombinEffectAndReducer(dispatch: Dispatch): [{ [key: string]: Reducer }, ForkEffect[], DxModel[]] {
   const reducers: { [key: string]: Reducer } = {};
   const effects: ForkEffect[] = [];
-  const models: DxModelInterface[] = [];
+  const models: DxModel[] = [];
   store.getModels().set.forEach(ModelConstructor => {
     const model = new ModelConstructor(dispatch);
     const modelReducer = createReducer(model);

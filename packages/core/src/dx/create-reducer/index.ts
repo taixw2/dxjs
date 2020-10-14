@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { REDUCER_METHODS_KEY, SymbolType } from '@dxjs/shared/symbol';
 import { Reducer, AnyAction } from 'redux';
-import { DxModelInterface, DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { reducerHook } from './hooks/reducer';
 import { beforeReducerHook } from './hooks/before-reducer';
 import { afterReducerHook } from './hooks/after-reducer';
+import { DxModel, DxModelContstructor } from '../../dx-model/model';
 
-export function createReducer<T>(model: DxModelInterface): Reducer | void {
+export function createReducer<T>(model: DxModel): Reducer | void {
   const Model = model.constructor as DxModelContstructor;
 
   // 获取 Model 中所有的 reducers
@@ -20,7 +20,7 @@ export function createReducer<T>(model: DxModelInterface): Reducer | void {
     (state: T, action: AnyAction): T => {
       model.state = state || model.state;
       const methodName = map.get(action.type);
-      if (!methodName) return model.state;
+      if (!methodName) return model.state as T;
       beforeReducerHook(state, action, model);
       const reducer = Reflect.get(model, methodName);
       const newState = reducer.call(model, action.payload, model.state, action);

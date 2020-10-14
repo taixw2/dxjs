@@ -1,11 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DxBase } from './base';
-import { DxModelInterface, DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 
-export class DxModel extends DxBase implements DxModelInterface {
-  state = {};
+export interface DxModelContstructor {
+  new (): DxModel;
+
+  namespace: string;
 }
 
-export function isDxModel(model: any): model is DxModelContstructor {
+export class DxModel extends DxBase {
+  state = {};
+
+  init() {
+    // system init
+  }
+}
+
+export function isDxModel(model: any): boolean {
   return model && model.prototype instanceof DxModel;
 }

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxBaseInterface } from '@dxjs/shared/interfaces/dx-base.interface';
 import { PuttableChannel, END, Task } from 'redux-saga';
 import { Action } from 'redux';
 import {
@@ -33,7 +32,7 @@ import {
   retry,
 } from 'redux-saga/effects';
 
-export class DxBase implements DxBaseInterface {
+export class DxBase {
   $put<T>(channel: PuttableChannel<T>, action: T | END): ChannelPutEffect<T>;
   $put<A extends Action>(action: A): PutEffect<A>;
   $put<A extends Action>(resolve: 'resolve', action: A): PutEffect<A>;

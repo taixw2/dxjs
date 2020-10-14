@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BaseEffectContextInterface } from '@dxjs/shared/interfaces/dx-effect-context.interface';
 import { store } from '../../helper/store';
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import { AnyAction } from 'redux';
+import { DxModel } from '../../dx-model/model';
+import { EffectTypeInterface } from './index';
 
-export function createEffectContext<T>(
-  model: DxModelInterface,
-  meta: EffectTypeInterface,
-  action: T,
-): BaseEffectContextInterface<T> {
+export interface BaseEffectContextInterface<T> {
+  action: T;
+
+  dispatch: (action: AnyAction) => AnyAction;
+
+  meta: EffectTypeInterface;
+
+  getState: () => any;
+
+  [key: string]: any;
+}
+
+export function createEffectContext<T>(model: DxModel, meta: EffectTypeInterface, action: T): BaseEffectContextInterface<T> {
   return {
     meta,
     action,

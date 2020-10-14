@@ -1,10 +1,8 @@
-import { ClassPlugin } from '@dxjs/shared/interfaces/dx-plugin.interface';
-
 interface IsGeneratorExtend extends Function {
   isGenerator(): boolean;
 }
 
-export function isClassPlugin(fn: unknown): fn is { new (): ClassPlugin } {
+export function isClassPlugin(fn: unknown): boolean {
   return typeof fn === 'function' && !!fn.toString().match(/^class/);
 }
 

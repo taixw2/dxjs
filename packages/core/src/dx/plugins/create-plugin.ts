@@ -5,9 +5,18 @@
  * @Last Modified time: 2020-08-10 11:56:00
  */
 
-import { DxPlugin } from '@dxjs/shared/interfaces/dx-plugin.interface';
 import { is } from '../../utils';
-import context from './context';
+import context, { Hook } from './context';
+
+interface Context {
+  hooks(hook: Hook, callback: unknown): void;
+}
+
+interface ClassPlugin {
+  apply(ctx: Context): void;
+}
+
+export type DxPlugin = { new (): ClassPlugin } | ((ctx: Context) => void);
 
 export default function storePlugins(plugins?: DxPlugin[]): void {
   if (!plugins || !plugins.length) return;

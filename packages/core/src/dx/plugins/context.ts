@@ -5,8 +5,17 @@
  * @Last Modified time: 2020-08-10 16:17:10
  */
 
-import { Hook } from '@dxjs/shared/interfaces/dx-plugin.interface';
 import { store } from '../../helper/store';
+
+export type Hook =
+  | 'beforeDispatch'
+  | 'afterDispatch'
+  | 'beforeEffect'
+  | 'effect'
+  | 'afterEffect'
+  | 'beforeReducer'
+  | 'reducer'
+  | 'afterReducer';
 
 export default {
   hooks(hook: Hook, callback: unknown): void {

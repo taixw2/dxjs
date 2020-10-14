@@ -1,8 +1,7 @@
 import { store } from '../../helper/store';
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
-import { isDxModel } from '../../dx-model/model';
+import { DxModelContstructor, isDxModel } from '../../dx-model/model';
 import { MODEL_NAME, SymbolType } from '@dxjs/shared/symbol';
-import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
+import { CreateOption } from '../exports/create';
 const invariant = require('invariant');
 
 /**
@@ -41,9 +40,7 @@ export function storeModel(options: CreateOption): void {
     while ((ModelConstructor = options?.models.shift())) {
       if (isDxModel(ModelConstructor)) {
         collectModel(ModelConstructor);
-        continue;
       }
-      modelsWithObject(ModelConstructor);
     }
   } else {
     modelsWithObject(options.models);

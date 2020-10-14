@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { store } from '../../helper/store';
 import { DxModel } from '../../dx-model/model';
@@ -9,7 +8,7 @@ import { DxModel } from '../../dx-model/model';
 
 export function collectFactory() {
   return (name?: string) => {
-    return function Decorate<T extends DxModelContstructor>(ModelTarget: T): T {
+    return function Decorate(ModelTarget: { new (): DxModel }): { new (): DxModel } {
       if (__DEV__) {
         require('invariant')(
           ModelTarget.prototype instanceof DxModel,

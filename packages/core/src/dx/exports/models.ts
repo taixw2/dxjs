@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxModelInterface, DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { store } from '../../helper/store';
 import { MODEL_NAME } from '@dxjs/shared/symbol';
+import { DxModelContstructor } from '../../dx-model/model';
 
-export type GetModels =
-  | { new (): DxModelInterface<any> }
-  | { new (): DxModelInterface<any> }[]
-  | { [key: string]: new () => DxModelInterface<any> }
-  | undefined;
+export type GetModels = DxModelContstructor | DxModelContstructor[] | { [key: string]: DxModelContstructor } | undefined;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function modelsFactory() {
-  function getModels(): { [key: string]: new () => DxModelInterface<any> };
-  function getModels(match: RegExp): { new (): DxModelInterface<any> }[];
-  function getModels(match: string): { new (): DxModelInterface<any> };
+  function getModels(): { [key: string]: DxModelContstructor };
+  function getModels(match: RegExp): DxModelContstructor[];
+  function getModels(match: string): DxModelContstructor;
   function getModels(match?: string | RegExp): GetModels {
     const map = store.getModels()?.map || {};
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -1,10 +1,9 @@
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { Action, Store } from 'redux';
 import { store } from '../../helper/store';
 import { storeModel } from './store-model';
-// import { storeEnhancer } from './store-enhancer';
 import { combinStore } from './create-store';
 import storePlugins from '../plugins/create-plugin';
+import { CreateOption } from '../exports/create';
 
 export function createStoreFactory() {
   return <T>(options: CreateOption<T> = {}): Store<{}, Action> => {

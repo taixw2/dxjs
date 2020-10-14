@@ -1,6 +1,8 @@
 import { store } from '../../../helper/store';
-import { ReducerEnhancer } from '@dxjs/shared/interfaces/dx-reducer-enhancer.interface';
 import { Reducer } from 'redux';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ReducerEnhancer<T = any> = (reducer: Reducer) => T;
 
 type reducerFn = (f: Reducer) => Reducer;
 

@@ -9,11 +9,11 @@
 
 import { store } from '../../../helper/store';
 import { AnyAction } from 'redux';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { DxModel } from '../../../dx-model/model';
 
 type beforeReducerHookType = <T>(context: T) => T;
 
-export function beforeReducerHook<T>(state: T, action: AnyAction, model: DxModelInterface): void {
+export function beforeReducerHook<T>(state: T, action: AnyAction, model: DxModel): void {
   const beforeReducerHooks = store.plugins.get('beforeReducer') as beforeReducerHookType[];
   if (!beforeReducerHooks || !beforeReducerHooks.length) return;
   const context = { state, action, model };

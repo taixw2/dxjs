@@ -1,5 +1,3 @@
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import { ForkEffect, call } from 'redux-saga/effects';
 import { createEffectHandler } from './create-effect-handler';
 import { createEffectFork } from './create-effect-fork';
@@ -9,8 +7,10 @@ import { createEffectContext } from './create-effect-context';
 import effectHook from './hooks/effect';
 import context from '../plugins/context';
 import afterEffectHook from './hooks/afterEffect';
+import { DxModel } from '../../dx-model/model';
+import { EffectTypeInterface } from './index';
 
-export function combinSaga(model: DxModelInterface, meta: EffectTypeInterface): ForkEffect {
+export function combinSaga(model: DxModel, meta: EffectTypeInterface): ForkEffect {
   function* effect(action: AnyAction): Generator {
     const baseContext = createEffectContext(model, meta, action);
 

@@ -1,7 +1,7 @@
-import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
-import { Hook } from '@dxjs/shared/interfaces/dx-plugin.interface';
 import { Store } from 'redux';
 import { SymbolType } from '@dxjs/shared/symbol';
+import { DxModelContstructor } from '../dx-model/model';
+import { Hook } from '../dx/plugins/context';
 
 interface ModelRefs {
   set: Set<DxModelContstructor>;
@@ -60,7 +60,3 @@ export const store = {
     return store.models;
   },
 };
-
-// 流程演示
-// 1. 实例化 store, 所有的都被保存在对应的 instance 中
-// 2. dispatch 找到对应的 plugins

@@ -1,7 +1,7 @@
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 import { TAKE_LATEST, TAKE_EVERY, TAKE_LEADING, THROTTLE } from '@dxjs/shared/symbol';
 import { spawn, takeLatest, takeEvery, takeLeading, throttle, ForkEffect } from 'redux-saga/effects';
 import { AnyAction } from 'redux';
+import { EffectTypeInterface } from './index';
 
 export function createEffectFork(meta: EffectTypeInterface, effectHandler: (action: AnyAction) => Generator): ForkEffect {
   return spawn(function*() {

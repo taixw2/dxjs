@@ -1,13 +1,23 @@
-import { EFFECT_METHODS_META } from '@dxjs/shared/symbol';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
+import { EFFECT_METHODS_META, SymbolType } from '@dxjs/shared/symbol';
 import { all, AllEffect, ForkEffect } from 'redux-saga/effects';
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 import { store } from '../../helper/store';
 import { combinSaga } from './combin-saga';
-// import { hackTaro } from './hack-taro';
-// import { createEffectContext } from './create-effect-context';
+import { DxModel } from '../../dx-model/model';
 
-export function createEffect(model: DxModelInterface): void | (() => Generator<AllEffect<ForkEffect>>) {
+export interface EffectTypeInterface {
+  name: SymbolType;
+  // action type
+  actionType: SymbolType;
+  /**
+   * saga helper
+   * TAKE_EVERY,TAKE_LATEST,TAKE_LEADING,THROTTLE
+   */
+  helperType: SymbolType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+}
+
+export function createEffect(model: DxModel): void | (() => Generator<AllEffect<ForkEffect>>) {
   const Model = model.constructor;
   const effects: Set<EffectTypeInterface> = Reflect.getMetadata(EFFECT_METHODS_META, Model);
   if (!effects) return;

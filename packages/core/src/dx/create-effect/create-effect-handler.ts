@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import { is } from '../../utils';
+import { DxModel } from '../../dx-model/model';
+import { EffectTypeInterface } from './index';
 
-export function createEffectHandler(model: DxModelInterface, meta: EffectTypeInterface) {
+export function createEffectHandler(model: DxModel, meta: EffectTypeInterface) {
   return function*(action: AnyAction): Generator {
     try {
       const currentEffect = Reflect.get(model, meta.name);
