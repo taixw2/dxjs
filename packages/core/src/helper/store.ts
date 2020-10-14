@@ -5,7 +5,7 @@ import { Hook } from '../dx/create-plugin';
 
 interface ModelRefs {
   set: Set<DxModelContstructor>;
-  map: { [key: string]: DxModelContstructor };
+  map: Record<SymbolType, DxModelContstructor>;
 }
 
 export const store = {
@@ -13,7 +13,10 @@ export const store = {
   plugins: new Map<Hook, unknown[]>(),
 
   // models
-  models: {} as ModelRefs,
+  models: {
+    set: new Set(),
+    map: {},
+  } as ModelRefs,
 
   reduxStore: null as Store | null,
 

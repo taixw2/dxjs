@@ -1,6 +1,6 @@
 import { store } from '../../helper/store';
 import { DxModelContstructor, isDxModel } from '../../dx-model/model';
-import { MODEL_NAME, SymbolType } from '@dxjs/shared/symbol';
+import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { CreateOption } from '../exports/create';
 const invariant = require('invariant');
 
@@ -15,14 +15,14 @@ export function storeModel(options: CreateOption): void {
    * 将 Modal 的构造类存起来
    * @param Model
    */
-  function collectModel(Model: DxModelContstructor, name?: SymbolType): void {
+  function collectModel(Model: DxModelContstructor, name?: string): void {
     if (__DEV__) {
       invariant(isDxModel(Model), '%s 不是一个有效的 DxModel, ', Model?.name ?? typeof Model);
     }
-    const realName = name || Model.namespace || Model.name;
+    const realName = name || Model.namespace;
 
     Reflect.defineMetadata(MODEL_NAME, realName, Model);
-    models.map[Model.name] = Model;
+    models.map[realName] = Model;
     models.set.add(Model);
   }
 
@@ -31,7 +31,7 @@ export function storeModel(options: CreateOption): void {
     if (__DEV__) {
       invariant(typeof withObject === 'object', 'models 不是一个有效的类型 %s, 请传入数组或对象', typeof withObject);
     }
-    Reflect.ownKeys(withObject).forEach(key => collectModel(withObject[String(key)], String(key)));
+    Object.keys(withObject).forEach(key => collectModel(withObject[key], key));
   }
 
   if (Array.isArray(options.models)) {
