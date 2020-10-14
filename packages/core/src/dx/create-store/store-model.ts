@@ -6,7 +6,6 @@ const invariant = require('invariant');
 
 /**
  * 将 options 中传入的 models 处理
- * @param inst
  * @param options
  */
 export function storeModel(options: CreateOption): void {

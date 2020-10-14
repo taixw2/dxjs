@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { store } from '../../helper/store';
-import { DxModel } from '../../dx-model/model';
+import { DxModel, DxModelContstructor } from '../../dx-model/model';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-
+// TODO: support HMR
 export function collectFactory() {
   return (name?: string) => {
-    return function Decorate(ModelTarget: { new (): DxModel }): { new (): DxModel } {
+    return function Decorate(ModelTarget: DxModelContstructor): DxModelContstructor {
       if (__DEV__) {
         require('invariant')(
           ModelTarget.prototype instanceof DxModel,
