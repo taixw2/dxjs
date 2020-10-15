@@ -1,41 +1,42 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSelector } from 'react-redux';
+import { Reducer } from '../../../common';
 import { DxActionCreate } from '../dx/create-action';
 import { DxBase } from './base';
 
-export interface DxModelContstructor<T extends DxModel> {
+export interface DxModelContstructor {
   new (): DxModel;
-  namespace: string;
-
-  patch: DxActionCreate<T['state']>;
 }
 
 export class DxModel<S = {}> extends DxBase {
+  static namespace: string = Math.random().toString(); // 用户没有设置，就使用随机的 namespace
+
+  static patch: DxActionCreate;
+
+  static selector<T>() {
+    return (state: any) => state[this.namespace] as T;
+  }
+
+  static useSelector<T>() {
+    return useSelector<T>(this.selector);
+  }
+
+  static action(actionType: string, payload: any) {
+    (this as any)[actionType]?.(payload);
+  }
+
+  init?: () => void;
   state = {} as S;
-  init() {}
 
   // 内置的 reducer
+  @Reducer()
   patch(payload: S) {
     Object.assign(this.state, payload);
-  }
-
-  // 内置的静态方法
-  static namespace: string;
-
-  static selector() {
-    return (state: any) => state[this.namespace];
-  }
-
-  static useSelector() {
-    return useSelector(this.selector);
+    return this.state;
   }
 }
 
-export function isDxModel<T extends DxModel>(model: any): model is DxModelContstructor<T> {
+export function isDxModel(model: any): model is DxModelContstructor {
   return model && model.prototype instanceof DxModel;
-}
-
-export function DxModelGeneratory<T extends DxModel>(): DxModelContstructor<T> {
-  return (DxModel as unknown) as DxModelContstructor<T>;
 }
