@@ -2,4 +2,4 @@
 const Dx = require('./src/index.ts');
 
 module.exports = Dx;
-module.exports.default = Dx.default;
+module.exports.default = Dx;

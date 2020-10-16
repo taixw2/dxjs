@@ -1,27 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { store } from '../../helper/store';
-import { DxModel } from '../../dx-model/model';
+import { DxModel, DxModelContstructor } from '../../dx-model/model';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const invariant = require('invariant');
-
-export function collectFactory(inst: symbol) {
+// TODO: support HMR
+export function collectFactory() {
   return (name?: string) => {
-    return function Decorate<T extends DxModelContstructor>(ModelTarget: T): T {
+    return function Decorate(ModelTarget: DxModelContstructor): DxModelContstructor {
       if (__DEV__) {
-        invariant(
+        require('invariant')(
           ModelTarget.prototype instanceof DxModel,
           'collect model 必须继承自 DxModel, 当前 model 类型为 %s',
           typeof ModelTarget.prototype,
         );
 
-        invariant(!store.reduxStore.get(inst), 'store 已经存在, 不能再 store 创建之后增加 model');
+        require('invariant')(!store.reduxStore, 'store 已经存在, 不能再 store 创建之后增加 model');
       }
 
-      const models = store.getModels(inst);
+      const models = store.getModels();
       const _name = name || ModelTarget.name;
       Reflect.defineMetadata(MODEL_NAME, _name, ModelTarget);
       models.map[_name] = ModelTarget;

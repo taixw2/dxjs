@@ -8,13 +8,15 @@ const fs = require('fs');
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
 const resolve = require('rollup-plugin-node-resolve');
+// const resolve = require('rollup-plugin-node-resolve');
+const rollupTypescript = require('rollup-plugin-typescript2');
 const terser = require('rollup-plugin-terser').terser;
 const replace = require('rollup-plugin-replace');
 const gzip = require('gzip-size');
 const babelCore = require('@babel/core');
-const react = require('react');
-const reactDom = require('react-dom');
 const bundles = require('./bundles');
+
+const cwd = process.cwd();
 
 function getPackgeFileName(packageName, bundleType) {
   switch (bundleType) {
@@ -71,6 +73,11 @@ function getPackageName(package) {
   return package.split('/')[1];
 }
 
+/**
+ * rollup build
+ * @param {*} package 包
+ * @param {*} bundleType  打包类型
+ */
 async function createBundle(package, bundleType) {
   // 获取文件名称
   const { entry, global: globalName, externals } = package;
@@ -82,6 +89,7 @@ async function createBundle(package, bundleType) {
   process.env.NODE_ENV = getNodeEnv(bundleType);
   const isProduction = process.env.NODE_ENV === 'production';
 
+
   try {
     const entryFile = require.resolve(entry);
     const bundle = await rollup.rollup({
@@ -92,15 +100,11 @@ async function createBundle(package, bundleType) {
           __DEV__: !isProduction,
           __ISSUE__: 'https://github.com/taixw2/dxjs/issues',
         }),
+        commonjs(),
         resolve({
           extensions: ['.js', '.ts'],
         }),
-        commonjs({
-          namedExports: {
-            react: Object.keys(react),
-            'react-dom': Object.keys(reactDom),
-          },
-        }),
+        rollupTypescript(),
         babel({
           configFile: path.resolve('.babelrc'),
           exclude: 'node_modules/**',
@@ -113,9 +117,11 @@ async function createBundle(package, bundleType) {
 
     await bundle.write({
       // output option
+      preferConst: true,
       file: getOutoutPath(packageName, bundleType, packageFileName),
       format: getFormat(bundleType),
       globals: combinGlobalModule(externals),
+      exports: 'auto',
       freeze: false,
       name: globalName,
       interop: false,
@@ -138,10 +144,13 @@ async function copyTo(from, to) {
   });
 }
 
+/**
+ * 将未参与打包的资源复制到输出目录中
+ */
 function copyResource() {
-  const tasks = fs.readdirSync('packages').map(async name => {
-    const fromBaseDir = path.join('packages', name);
-    const toBaseDir = path.join('build', name);
+  const tasks = fs.readdirSync(path.join(cwd, 'packages')).map(async name => {
+    const fromBaseDir = path.join(cwd, 'packages', name);
+    const toBaseDir = path.join(cwd, 'build', name);
     if (!fs.existsSync(toBaseDir)) {
       // 直接复制整个目录到 build
       await mkdirp(toBaseDir);
@@ -152,20 +161,26 @@ function copyResource() {
 
     await copyTo(path.join(fromBaseDir, 'npm'), path.join(toBaseDir));
     await copyTo('LICENSE', path.join(toBaseDir, 'LICENSE'));
-    await copyTo(path.join(fromBaseDir, 'package.json'), path.join(toBaseDir, 'package.json'));
+    // await copyTo(path.join(fromBaseDir, 'package.json'), path.join(toBaseDir, 'package.json'));
     await copyTo('README.md', path.join(toBaseDir, 'README.md'));
+    const pkg = require(path.join(fromBaseDir, 'package.json'));
+    pkg.types = 'src/index.d.ts';
+
+    await fs.promises.writeFile(path.join(toBaseDir, 'package.json'), JSON.stringify(pkg), 'utf-8');
   });
 
   return Promise.all(tasks);
 }
 
+/**
+ * 开始 Build
+ * 打包 cjs + umd 模块
+ */
 async function build() {
   await rmfr('build');
 
   for (let index = 0; index < bundles.packages.length; index++) {
     const package = bundles.packages[index];
-    await createBundle(package, bundles.UMD);
-    await createBundle(package, bundles.UMD_DEV);
     await createBundle(package, bundles.CJS);
     await createBundle(package, bundles.CJS_DEV);
   }
@@ -173,4 +188,6 @@ async function build() {
   await copyResource();
 }
 
-build();
+build().catch(error => {
+  console.error('build fail', error);
+});

@@ -29,6 +29,8 @@ jobs:
       - name: Build
         run: yarn build
       # publish to npm
-      - run: npm publish build/common
-      - run: npm publish build/core
-      - run: npm publish build/shared
+      
+      - name: Publish
+        run: npm publish build/common
+        run: npm publish build/core
+        run: npm publish build/shared

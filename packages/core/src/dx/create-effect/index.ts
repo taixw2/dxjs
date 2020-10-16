@@ -1,29 +1,33 @@
 import { EFFECT_METHODS_META, SymbolType } from '@dxjs/shared/symbol';
-import { DxModelInterface } from '@dxjs/shared/interfaces/dx-model.interface';
 import { all, AllEffect, ForkEffect } from 'redux-saga/effects';
-import { EffectTypeInterface } from '@dxjs/shared/interfaces/dx-effect-type.interface';
 import { store } from '../../helper/store';
 import { combinSaga } from './combin-saga';
-import { hackTaro } from './hack-taro';
-import { securityAccessMap } from '../../helper/sec-access-map';
-import { createEffectContext } from './create-effect-context';
+import { DxModel } from '../../dx-model/model';
 
-export function createEffect(inst: symbol, model: DxModelInterface): void | (() => Generator<AllEffect<ForkEffect>>) {
+export interface EffectTypeInterface {
+  name: SymbolType;
+  // action type
+  actionType: SymbolType;
+  /**
+   * saga helper
+   * TAKE_EVERY,TAKE_LATEST,TAKE_LEADING,THROTTLE
+   */
+  helperType: SymbolType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any;
+}
+
+export function createEffect(model: DxModel): void | (() => Generator<AllEffect<ForkEffect>>) {
   const Model = model.constructor;
   const effects: Set<EffectTypeInterface> = Reflect.getMetadata(EFFECT_METHODS_META, Model);
   if (!effects) return;
 
-  hackTaro(model);
+  // hackTaro(model);
 
-  // 收集 effect action
-  const actionTypes = securityAccessMap(store.actionTypes, inst, {
-    reducers: new Set<SymbolType>(),
-    effects: new Set<SymbolType>(),
-  });
-
+  const actionTypes = store.effectTypes ?? (store.effectTypes = new Set());
   const currentSaga: ForkEffect[] = Array.from(effects).map(item => {
-    actionTypes.effects.add(item.actionType);
-    return combinSaga(model, item, createEffectContext(inst, model, item));
+    actionTypes.add(item.actionType);
+    return combinSaga(model, item);
   });
 
   return function* saga(): Generator<AllEffect<ForkEffect>> {

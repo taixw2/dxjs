@@ -1,27 +1,32 @@
 import { store } from '../../helper/store';
-import { Reducer, Dispatch, AnyAction, Store } from 'redux';
+import { Reducer, AnyAction, Store } from 'redux';
 import { ForkEffect, spawn, all } from 'redux-saga/effects';
 import { createReducer } from '../create-reducer';
 import { createEffect } from '../create-effect';
 import { MODEL_NAME } from '@dxjs/shared/symbol';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
+import reduxSaga from 'redux-saga';
 import { promiseMiddleware } from './promise-middleware';
 import { createAction } from '../create-action';
+import { resolve } from '../../utils';
+import { DxModel } from '../../dx-model/model';
+import { CreateOption } from '../exports/create';
 
 const nonp = (): void => undefined;
+
+const createSagaMiddleware = resolve.getExportFromNamespace(reduxSaga);
 
 /**
  * 重组 effect 和 reducer
  */
-function recombinEffectAndReducer(inst: symbol, dispatch: Dispatch): [{ [key: string]: Reducer }, ForkEffect[]] {
+function recombinEffectAndReducer(): [{ [key: string]: Reducer }, ForkEffect[], DxModel[]] {
   const reducers: { [key: string]: Reducer } = {};
   const effects: ForkEffect[] = [];
-  store.getModels(inst).set.forEach(ModelConstructor => {
-    const model = new ModelConstructor(dispatch);
-    const modelReducer = createReducer(inst, model);
-    const modelEffect = createEffect(inst, model);
+  const models: DxModel[] = [];
+  store.getModels().set.forEach(ModelConstructor => {
+    const model = new ModelConstructor();
+    const modelReducer = createReducer(model);
+    const modelEffect = createEffect(model);
 
     const modelName = Reflect.getMetadata(MODEL_NAME, ModelConstructor);
     if (modelReducer) {
@@ -30,32 +35,39 @@ function recombinEffectAndReducer(inst: symbol, dispatch: Dispatch): [{ [key: st
     if (modelEffect) {
       effects.push(spawn(modelEffect));
     }
+
+    models.push(model);
   });
 
-  return [reducers, effects];
+  return [reducers, effects, models];
 }
 
 /**
+ * 调用 redux 的 create store
  * 生成 redux store
  */
-export function combinStore(inst: symbol, options: CreateOption): Store {
+export function combinStore(options: CreateOption): Store {
   const optionsMiddlewares = options.middlewares ?? [];
   const sagaMiddleware = createSagaMiddleware({
-    onError: () => undefined,
+    onError: options.onSagaError,
     effectMiddlewares: options.sagaMiddlewares,
   });
 
-  const middlewares = [promiseMiddleware(inst), sagaMiddleware, ...optionsMiddlewares];
+  const middlewares = [promiseMiddleware(), sagaMiddleware, ...optionsMiddlewares];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const istore = createStore<any, AnyAction, {}, {}>(nonp, applyMiddleware(...middlewares));
-  const [reducers, effects] = recombinEffectAndReducer(inst, istore.dispatch);
-  istore.replaceReducer(combineReducers({ __dxjs: () => '__dxjs', ...reducers }));
+  const store = createStore<any, AnyAction, {}, {}>(nonp, applyMiddleware(...middlewares));
+  const [reducers, effects, models] = recombinEffectAndReducer();
+
+  store.replaceReducer(combineReducers({ __dxjs: () => '__dxjs', ...reducers }));
+
   sagaMiddleware.run(function*() {
     yield all(effects);
   });
 
-  createAction(inst, istore.dispatch);
-  store.reduxStore.set(inst, istore);
-  return istore;
+  createAction(store.dispatch);
+
+  // 初始化
+  models.forEach(model => model.init?.());
+  return store;
 }

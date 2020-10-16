@@ -1,33 +1,31 @@
-import { DxEnhancer } from '@dxjs/shared/interfaces/dx-enhancer.interface';
-import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
 import { Store } from 'redux';
 import { SymbolType } from '@dxjs/shared/symbol';
+import { DxModelContstructor } from '../dx-model/model';
+import { Hook } from '../dx/create-plugin';
 
 interface ModelRefs {
   set: Set<DxModelContstructor>;
-  map: { [key: string]: DxModelContstructor };
-}
-
-interface StoreActionType {
-  // 用于记录生成的 action type
-  reducers: Set<SymbolType>;
-  effects: Set<SymbolType>;
+  map: Record<SymbolType, DxModelContstructor>;
 }
 
 export const store = {
-  enhancer: new Map<symbol, DxEnhancer>(),
-  models: new Map<symbol, ModelRefs>(),
-  reduxStore: new Map<symbol, Store>(),
+  // plugin
+  plugins: new Map<Hook, unknown[]>(),
 
-  // 用来记录 action, 以方便判断 action 是否 effect
-  actionTypes: new Map<symbol, StoreActionType>(),
+  // models
+  models: {
+    set: new Set(),
+    map: {},
+  } as ModelRefs,
 
-  getModels(inst: symbol): ModelRefs {
-    let models = store.models.get(inst);
-    if (!models) {
-      models = { set: new Set(), map: {} };
-      store.models.set(inst, models);
+  reduxStore: null as Store | null,
+
+  effectTypes: new Set<SymbolType>(),
+
+  getModels(): ModelRefs {
+    if (!store.models) {
+      store.models = { set: new Set(), map: {} };
     }
-    return models;
+    return store.models;
   },
 };

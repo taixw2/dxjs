@@ -1,19 +1,28 @@
 import { store } from '../../helper/store';
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
-import { isDxModel } from '../../dx-model/model';
-import { MODEL_NAME, SymbolType } from '@dxjs/shared/symbol';
-import { DxModelContstructor } from '@dxjs/shared/interfaces/dx-model.interface';
+import { DxModelContstructor, isDxModel } from '../../dx-model/model';
+import { MODEL_NAME } from '@dxjs/shared/symbol';
+import { CreateOption } from '../exports/create';
 const invariant = require('invariant');
 
-export function storeModel(inst: symbol, options: CreateOption): void {
-  const models = store.getModels(inst);
+/**
+ * 将 options 中传入的 models 处理
+ * @param options
+ */
+export function storeModel(options: CreateOption): void {
+  const models = store.getModels();
 
-  function collectModel(name: SymbolType, Model: DxModelContstructor): void {
+  /**
+   * 将 Modal 的构造类存起来
+   * @param Model
+   */
+  function collectModel(Model: DxModelContstructor, name?: string): void {
     if (__DEV__) {
       invariant(isDxModel(Model), '%s 不是一个有效的 DxModel, ', Model?.name ?? typeof Model);
     }
-    Reflect.defineMetadata(MODEL_NAME, name, Model);
-    models.map[Model.name] = Model;
+    const realName = name || Model.namespace;
+
+    Reflect.defineMetadata(MODEL_NAME, realName, Model);
+    models.map[realName] = Model;
     models.set.add(Model);
   }
 
@@ -22,17 +31,15 @@ export function storeModel(inst: symbol, options: CreateOption): void {
     if (__DEV__) {
       invariant(typeof withObject === 'object', 'models 不是一个有效的类型 %s, 请传入数组或对象', typeof withObject);
     }
-    Object.keys(withObject).forEach(key => collectModel(key, withObject[key]));
+    Object.keys(withObject).forEach(key => collectModel(withObject[key], key));
   }
 
   if (Array.isArray(options.models)) {
     let ModelConstructor;
     while ((ModelConstructor = options?.models.shift())) {
       if (isDxModel(ModelConstructor)) {
-        collectModel(ModelConstructor.name, ModelConstructor);
-        continue;
+        collectModel(ModelConstructor);
       }
-      modelsWithObject(ModelConstructor);
     }
   } else {
     modelsWithObject(options.models);

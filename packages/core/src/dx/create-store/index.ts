@@ -1,22 +1,24 @@
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { Action, Store } from 'redux';
 import { store } from '../../helper/store';
 import { storeModel } from './store-model';
-import { storeEnhancer } from './store-enhancer';
 import { combinStore } from './create-store';
+import storePlugins from '../create-plugin';
+import { CreateOption } from '../exports/create';
 
-export function createStoreFactory(inst: symbol) {
-  return <T>(options: CreateOption<T> = {}): Store<{}, Action> => {
-    const previousStore = store.reduxStore.get(inst);
-    if (previousStore) return previousStore;
+export function createStoreFactory() {
+  return (options: CreateOption = {}): Store<{}, Action> => {
+    // TODO: HMR
+    if (store.reduxStore) return store.reduxStore;
 
-    // 收集全局 enhancer
-    storeEnhancer(inst, options);
+    // 收集 plugins
+    storePlugins(options.plugins);
 
     // 收集 model
-    storeModel(inst, options);
+    storeModel(options);
 
     // 生成 store
-    return combinStore(inst, options);
+    const newStore = combinStore(options);
+    store.reduxStore = newStore;
+    return newStore;
   };
 }

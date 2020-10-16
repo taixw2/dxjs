@@ -12,6 +12,7 @@ Dxjs 是一个 基于 redux-saga 和 typescript 的状态管理库，它在 redu
 
 ![](./docs/images/saga-process.jpg)
 
+
 ### 基础特性
 
 - **Symbol**, 解决 Action Type 冲突，通过方法名换取 Action, 免去定义烦恼

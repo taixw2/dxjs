@@ -1,13 +1,27 @@
 import * as React from 'react';
-import { CreateOption } from '@dxjs/shared/interfaces/dx-create-option.interface';
 import { Provider } from 'react-redux';
 import { createStoreFactory } from '../create-store';
+import { Middleware } from 'redux';
+import { EffectMiddleware } from 'redux-saga';
+import { DxModelContstructor } from '../../dx-model/model';
+import { DxPlugin } from '../create-plugin';
 
-export function createFactory(inst: symbol) {
-  return <T>(options?: CreateOption<T>): React.SFC => {
-    const store = createStoreFactory(inst)(options);
-    return <T extends { store?: unknown }>({ children }: React.PropsWithChildren<T>): React.ReactElement => {
-      return React.createElement(Provider, { store }, children);
-    };
+export interface CreateOption {
+  models?: DxModelContstructor[] | { [key: string]: DxModelContstructor };
+  middlewares?: Middleware[];
+  sagaMiddlewares?: EffectMiddleware[];
+  plugins?: DxPlugin[];
+  onSagaError?: (
+    error: Error,
+    errorInfo: {
+      sagaStack: string;
+    },
+  ) => void;
+}
+
+export function createFactory() {
+  return (options?: CreateOption): React.FunctionComponent => {
+    const store = createStoreFactory()(options);
+    return ({ children }: React.PropsWithChildren<{}>) => React.createElement(Provider, { store }, children);
   };
 }

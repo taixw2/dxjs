@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DxBaseInterface } from '@dxjs/shared/interfaces/dx-base.interface';
 import { PuttableChannel, END, Task } from 'redux-saga';
 import { Action } from 'redux';
 import {
@@ -33,7 +32,7 @@ import {
   retry,
 } from 'redux-saga/effects';
 
-export class DxBase implements DxBaseInterface {
+export class DxBase {
   $put<T>(channel: PuttableChannel<T>, action: T | END): ChannelPutEffect<T>;
   $put<A extends Action>(action: A): PutEffect<A>;
   $put<A extends Action>(resolve: 'resolve', action: A): PutEffect<A>;
@@ -52,10 +51,7 @@ export class DxBase implements DxBaseInterface {
     return put(resolve, action);
   }
 
-  $call<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: Parameters<Fn>
-  ): CallEffect<SagaReturnType<Fn>>;
+  $call<Fn extends (...args: any[]) => any>(fn: Fn, ...args: Parameters<Fn>): CallEffect<SagaReturnType<Fn>>;
   $call<Ctx, Fn extends (this: Ctx, ...args: any[]) => any>(
     ctxAndFn: [Ctx, Fn],
     ...args: Parameters<Fn>
@@ -64,10 +60,7 @@ export class DxBase implements DxBaseInterface {
     ctxAndFn: { context: Ctx; fn: Fn },
     ...args: Parameters<Fn>
   ): CallEffect<SagaReturnType<Fn>>;
-  $call<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: Parameters<Fn>
-  ): CallEffect<SagaReturnType<Fn>> {
+  $call<Fn extends (...args: any[]) => any>(fn: Fn, ...args: Parameters<Fn>): CallEffect<SagaReturnType<Fn>> {
     return call(fn, ...args);
   }
 
@@ -106,14 +99,8 @@ export class DxBase implements DxBaseInterface {
     ctxAndFn: { context: Ctx; fn: Fn },
     ...args: CpsFunctionParameters<Fn>
   ): CpsEffect<ReturnType<Fn>>;
-  $cps<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: CpsFunctionParameters<Fn>
-  ): CpsEffect<ReturnType<Fn>>;
-  $cps<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: CpsFunctionParameters<Fn>
-  ): CpsEffect<ReturnType<Fn>> {
+  $cps<Fn extends (...args: any[]) => any>(fn: Fn, ...args: CpsFunctionParameters<Fn>): CpsEffect<ReturnType<Fn>>;
+  $cps<Fn extends (...args: any[]) => any>(fn: Fn, ...args: CpsFunctionParameters<Fn>): CpsEffect<ReturnType<Fn>> {
     return cps(fn, ...args);
   }
 
@@ -133,14 +120,8 @@ export class DxBase implements DxBaseInterface {
     ctxAndFn: { context: Ctx; fn: Fn },
     ...args: Parameters<Fn>
   ): ForkEffect<SagaReturnType<Fn>>;
-  $fork<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: Parameters<Fn>
-  ): ForkEffect<SagaReturnType<Fn>>;
-  $fork<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: Parameters<Fn>
-  ): ForkEffect<SagaReturnType<Fn>> {
+  $fork<Fn extends (...args: any[]) => any>(fn: Fn, ...args: Parameters<Fn>): ForkEffect<SagaReturnType<Fn>>;
+  $fork<Fn extends (...args: any[]) => any>(fn: Fn, ...args: Parameters<Fn>): ForkEffect<SagaReturnType<Fn>> {
     return fork(fn, ...args);
   }
 
@@ -160,14 +141,8 @@ export class DxBase implements DxBaseInterface {
     ctxAndFn: { context: Ctx; fn: Fn },
     ...args: Parameters<Fn>
   ): ForkEffect<SagaReturnType<Fn>>;
-  $spawn<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: Parameters<Fn>
-  ): ForkEffect<SagaReturnType<Fn>>;
-  $spawn<Fn extends (...args: any[]) => any>(
-    fn: Fn,
-    ...args: Parameters<Fn>
-  ): ForkEffect<SagaReturnType<Fn>> {
+  $spawn<Fn extends (...args: any[]) => any>(fn: Fn, ...args: Parameters<Fn>): ForkEffect<SagaReturnType<Fn>>;
+  $spawn<Fn extends (...args: any[]) => any>(fn: Fn, ...args: Parameters<Fn>): ForkEffect<SagaReturnType<Fn>> {
     return spawn(fn, ...args);
   }
 
@@ -183,14 +158,8 @@ export class DxBase implements DxBaseInterface {
   }
 
   $select(): SelectEffect;
-  $select<Fn extends (state: any, ...args: any[]) => any>(
-    selector: Fn,
-    ...args: Tail<Parameters<Fn>>
-  ): SelectEffect;
-  $select<Fn extends (state: any, ...args: any[]) => any>(
-    selector?: Fn,
-    ...args: Tail<Parameters<Fn>>
-  ): SelectEffect {
+  $select<Fn extends (state: any, ...args: any[]) => any>(selector: Fn, ...args: Tail<Parameters<Fn>>): SelectEffect;
+  $select<Fn extends (state: any, ...args: any[]) => any>(selector?: Fn, ...args: Tail<Parameters<Fn>>): SelectEffect {
     if (typeof selector === 'undefined') return select();
     return select(selector, ...args);
   }

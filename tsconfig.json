@@ -7,7 +7,7 @@
     "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "module": "UMD"
+    "module": "ESNext"
   },
   "include": ["packages/**/*"],
   "exclude": ["node_modules", "scripts"]
