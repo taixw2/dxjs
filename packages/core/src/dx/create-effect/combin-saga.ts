@@ -5,7 +5,6 @@ import { AnyAction } from 'redux';
 import beforeEffectHook from './hooks/beforeEffect';
 import { createEffectContext } from './create-effect-context';
 import effectHook from './hooks/effect';
-import context from '../plugins/context';
 import afterEffectHook from './hooks/afterEffect';
 import { DxModel } from '../../dx-model/model';
 import { EffectTypeInterface } from './index';
@@ -27,11 +26,11 @@ export function combinSaga(model: DxModel, meta: EffectTypeInterface): ForkEffec
     const effect = createEffectHandler(model, meta);
     try {
       // 运行 effect
-      const data = yield* effectHook(context, effect(action));
+      const data = yield* effectHook(baseContext, effect(action));
       //钩子
-      afterEffectHook({ ...context, data, error: null });
+      afterEffectHook({ ...baseContext, data, error: null });
     } catch (error) {
-      afterEffectHook({ ...context, data: null, error: error });
+      afterEffectHook({ ...baseContext, data: null, error: error });
       throw error;
     }
   }

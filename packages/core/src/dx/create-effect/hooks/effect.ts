@@ -1,10 +1,15 @@
 import { store } from '../../../helper/store';
 
-function effectHook<T>(context: T, iterator: Generator): Generator {
+function effectHook(context: any, iterator: Generator): Generator {
   const hook =
-    (store.plugins.get('effect') as (<T>(
-      context: T,
-      ref: { next: () => Generator; abort: (value: unknown) => void; throw: (value: unknown) => void; isDone: () => void },
+    (store.plugins.get('effect') as ((
+      context: any,
+      ref: {
+        next: () => Generator;
+        abort: (value: unknown) => void;
+        throw: (value: unknown) => void;
+        isDone: () => void;
+      },
     ) => Generator)[]) ?? [];
 
   // 在 effect 上加一层包装
@@ -27,7 +32,7 @@ function effectHook<T>(context: T, iterator: Generator): Generator {
     }
 
     function isDone(): boolean {
-      if (!effectRef) return false;
+      if (effectRef === undefined) return false;
       return (effectRef as IteratorResult<any>).done ?? true;
     }
 

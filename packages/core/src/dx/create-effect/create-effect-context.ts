@@ -7,7 +7,7 @@ import { EffectTypeInterface } from './index';
 export interface BaseEffectContextInterface<T> {
   action: T;
 
-  dispatch: (action: AnyAction) => AnyAction;
+  dispatch: (action: AnyAction) => AnyAction | void;
 
   meta: EffectTypeInterface;
 
@@ -21,7 +21,7 @@ export function createEffectContext<T>(model: DxModel, meta: EffectTypeInterface
     meta,
     action,
     model,
-    getState: (): unknown => store.reduxStore.getState(),
-    dispatch: (action: AnyAction): AnyAction => store.reduxStore.dispatch(action),
+    getState: (): unknown => store?.reduxStore?.getState(),
+    dispatch: (action: AnyAction) => store?.reduxStore?.dispatch(action),
   };
 }

@@ -18,7 +18,7 @@ export type Hook =
   | 'reducer'
   | 'afterReducer';
 
-const PluginContext = {
+export const PluginContext = {
   hooks(hook: Hook, handler: unknown) {
     const hooks = store.plugins.get(hook) ?? [];
     hooks.push(handler);
