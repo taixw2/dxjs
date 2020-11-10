@@ -1,6 +1,6 @@
 {
   "name": "@dxjs/shared",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Unified management of your application status, use enhancer to deal with other tedious things",
   "keywords": [
     "dxjs",

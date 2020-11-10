@@ -34,7 +34,12 @@ export class DxModel<S = {}> extends DxBase {
   // 内置的 reducer
   @Reducer()
   patch(payload: S) {
-    Object.assign(this.state, payload);
+    if (typeof payload === 'function') {
+      payload(this.state);
+    } else {
+      Object.assign(this.state, payload);
+    }
+
     return this.state;
   }
 }

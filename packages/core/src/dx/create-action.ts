@@ -9,7 +9,7 @@ interface Effect {
   actionType: string;
 }
 
-export type DxActionCreate<T = any> = (payload?: Partial<T>) => void;
+export type DxActionCreate<T = any> = (payload?: ((state: T) => any) | Partial<T>) => void;
 
 export function createAction(dispatch: Dispatch<AnyAction>): void {
   const models = store.getModels();

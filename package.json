@@ -1,11 +1,11 @@
 {
   "name": "dxjs",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "",
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "build/*"
   ],
   "scripts": {
     "docs:dev": "vuepress dev docs",
@@ -14,7 +14,8 @@
     "test:cov": "jest --config scripts/jest/jest.config.js --coverage",
     "build": "node scripts/build.js && tsc -p tsconfig.dts.json",
     "release": "node scripts/release.js",
-    "clog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "clog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "publish": "npm run build && lerna publish"
   },
   "keywords": [],
   "author": "",
