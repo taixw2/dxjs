@@ -51,7 +51,7 @@
     "husky": "^4.2.5",
     "invariant": "^2.2.4",
     "jest": "^25.3.0",
-    "lerna": "^3.16.5",
+    "lerna": "^3.22.1",
     "lint-staged": "^10.1.6",
     "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
@@ -73,7 +73,6 @@
     "typescript": "^3.8.3",
     "vuepress": "^1.4.0"
   },
-  "dependencies": {},
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
