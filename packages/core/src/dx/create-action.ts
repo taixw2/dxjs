@@ -24,7 +24,7 @@ export function createAction(dispatch: Dispatch<AnyAction>): void {
           if (autoDispatch === false) {
             return { type: actionType, payload, ns: Model.name };
           }
-          return dispatch({ type: actionType, payload });
+          return dispatch({ type: actionType, payload, ns: Model.name });
         });
       });
     }
