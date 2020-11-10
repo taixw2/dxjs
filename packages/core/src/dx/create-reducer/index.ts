@@ -19,6 +19,9 @@ export function createReducer<T>(model: DxModel): Reducer | void {
   return reducerEnhancer(
     (state: T, action: AnyAction): T => {
       model.state = state || model.state;
+      if (action.ns && action.ns !== Model.name) {
+        return model.state as T;
+      }
       const methodName = map.get(action.type);
       if (!methodName) return model.state as T;
       beforeReducerHook(state, action, model);

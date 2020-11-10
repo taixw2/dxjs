@@ -22,7 +22,7 @@ export function createAction(dispatch: Dispatch<AnyAction>): void {
       reducersMap.forEach((methodName, actionType) => {
         Reflect.set(Model, methodName, function action(payload: any, autoDispatch?: boolean): AnyAction | void {
           if (autoDispatch === false) {
-            return { type: actionType, payload };
+            return { type: actionType, payload, ns: Model.name };
           }
           return dispatch({ type: actionType, payload });
         });
