@@ -1,6 +1,6 @@
 {
   "name": "dxjs",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -15,7 +15,7 @@
     "build": "node scripts/build.js && tsc -p tsconfig.dts.json",
     "release": "node scripts/release.js",
     "clog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "publish": "npm run build && lerna publish"
+    "pub": "npm run build && lerna publish --skip-git"
   },
   "keywords": [],
   "author": "",
